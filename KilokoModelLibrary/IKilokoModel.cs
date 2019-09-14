@@ -1,0 +1,21 @@
+﻿using System.Collections.Generic;
+using ItemNumberManager;
+
+namespace KilokoModelLibrary
+{
+    public interface IKilokoModel
+    {
+        string RawKiloko { get; }
+        int Kiloko { get; }
+
+        List<ItemNumber> Items { get; set; }
+
+        void AddNewCikk(string cikk, string name, string mask, string[] names);
+        void AddNewCikk(ItemNumber item);
+        void AddNewCikk(string rawLine);
+
+        void DeleteAllCikk();
+
+        ItemNumber GetItemnamesModel();
+    }
+}
