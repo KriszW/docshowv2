@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ItemNumberManager
+﻿namespace ItemNumberManager
 {
-    class PDFekModel
+    internal class PDFekModel
     {
         public PDFekModel(string mask, string[] files)
         {

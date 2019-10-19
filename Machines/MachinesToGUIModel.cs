@@ -1,9 +1,6 @@
 ﻿using KilokoModelLibrary;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Machines
 {
@@ -11,7 +8,6 @@ namespace Machines
     {
         public MachinesToGUIModel()
         {
-
         }
 
         public MachinesToGUIModel(KilokoModel model)
@@ -25,7 +21,7 @@ namespace Machines
             {
                 DocLeft = item?.PDFs[0]?.FileName;
             }
-            else if(item.PDFs.Count == 2)
+            else if (item.PDFs.Count == 2)
             {
                 DocRight = item?.PDFs[1]?.FileName;
             }
@@ -48,7 +44,7 @@ namespace Machines
 
         public string GetIP()
         {
-            var machine = MachineModel.Machines.Where(m=> m.KilokoNum==Kiloko).FirstOrDefault();
+            var machine = MachineModel.Machines.Where(m => m.KilokoNum == Kiloko).FirstOrDefault();
 
             return machine != default ? machine.IP : (default);
         }

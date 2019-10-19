@@ -1,9 +1,4 @@
 ﻿using PositioningLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TCPClient
 {
@@ -19,7 +14,7 @@ namespace TCPClient
 
             for (int i = 0; i < monitorCount; i++)
             {
-                Clients[i] = new DocsShowClient(Datas.ServerIP,Datas.Port,i);
+                Clients[i] = new DocsShowClient(Datas.ServerIP, Datas.Port, i);
 
                 while (successConnect == false)
                 {

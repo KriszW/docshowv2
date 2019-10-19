@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PositioningLib;
+using System;
 using System.Configuration;
 using System.Windows.Forms;
-using PositioningLib;
 
 namespace InItClientProgram
 {
@@ -17,7 +17,7 @@ namespace InItClientProgram
             string hide = ConfigurationManager.AppSettings["HideConsole"];
 
             //ha a hide YES akkor el kell rejteni a console ablakot
-            if(hide.ToUpper().TrimEnd().TrimStart() == "YES")
+            if (hide.ToUpper().TrimEnd().TrimStart() == "YES")
             {
                 NativeMethods.ShowWindow(Consolehandle, 0);
             }
@@ -25,7 +25,7 @@ namespace InItClientProgram
             else
             {
                 NativeMethods.ShowWindow(Consolehandle, 5);
-            }            
+            }
         }
 
         public static void SetUpParams()

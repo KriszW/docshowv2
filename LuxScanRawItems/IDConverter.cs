@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LuxScanRawItems
+﻿namespace LuxScanRawItems
 {
-    class IDConverter
+    internal class IDConverter
     {
         public string RawLine { get; private set; }
+
         public IDConverter(string line)
         {
             RawLine = line;
@@ -24,7 +19,7 @@ namespace LuxScanRawItems
         {
             var tempLine = "";
 
-            foreach(var item in longID)
+            foreach (var item in longID)
             {
                 if (char.IsDigit(item))
                 {

@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 
 namespace LuxScanOrdReader
 {
     public class FileReader
     {
-
         public FileInfo OrderFile { get; set; }
 
         public event OnLuxScanFileCopyError FileError;
+
         public event OnSuccessFileCopy CopySucceeded;
 
         //az order fájl lemásolása
@@ -48,12 +45,9 @@ namespace LuxScanOrdReader
             }
             catch (ApplicationException)
             {
-
             }
             catch (Exception ex)
             {
-
-
                 var logText = $"Nem található a Copy_ord.cmd fájl";
 
                 //valószínűleg nem található a Copy_ord.cmd fájl
@@ -62,9 +56,9 @@ namespace LuxScanOrdReader
             }
         }
 
-        void CheckOrdFileCount()
+        private void CheckOrdFileCount()
         {
-            var files = Directory.EnumerateFiles(Directory.GetCurrentDirectory()).Where(f=> f.EndsWith(".ord")).ToList();
+            var files = Directory.EnumerateFiles(Directory.GetCurrentDirectory()).Where(f => f.EndsWith(".ord")).ToList();
 
             if (files.Count == 1)
             {

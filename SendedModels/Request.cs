@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SendedModels
 {
@@ -14,11 +9,11 @@ namespace SendedModels
     {
         public Request()
         {
-
         }
-        public Request( string requestID, DateTime sendedDate, DateTime arrivedDate, RequestState state, RequestType requestCommand, byte[] data)
+
+        public Request(string requestID, DateTime sendedDate, DateTime arrivedDate, RequestState state, RequestType requestCommand, byte[] data)
         {
-            SetDatas(requestID,sendedDate,arrivedDate,state,requestCommand,data);
+            SetDatas(requestID, sendedDate, arrivedDate, state, requestCommand, data);
         }
 
         public Request(string requestID, DateTime arrivedDate, RequestState state, RequestType requestCommand, byte[] data)
@@ -26,12 +21,12 @@ namespace SendedModels
             SetDatas(requestID, DateTime.Now, arrivedDate, state, requestCommand, data);
         }
 
-        public Request( string requestID, DateTime sendedDate, DateTime arrivedDate, RequestType requestCommand, byte[] data)
+        public Request(string requestID, DateTime sendedDate, DateTime arrivedDate, RequestType requestCommand, byte[] data)
         {
-            SetDatas( requestID, sendedDate, arrivedDate, RequestState.Created, requestCommand, data);
+            SetDatas(requestID, sendedDate, arrivedDate, RequestState.Created, requestCommand, data);
         }
 
-        public Request( string requestID, RequestType requestCommand,DateTime arrivedDate, byte[] data)
+        public Request(string requestID, RequestType requestCommand, DateTime arrivedDate, byte[] data)
         {
             SetDatas(requestID, DateTime.Now, arrivedDate, RequestState.Created, requestCommand, data);
         }
@@ -40,10 +35,10 @@ namespace SendedModels
         {
             var num = (long)(new Random().Next(int.MaxValue / 2, int.MaxValue) * int.MaxValue);
 
-            return $"{DateTime.Now.ToShortDateString().Replace(".","").Replace(" ","")}{num}";
+            return $"{DateTime.Now.ToShortDateString().Replace(".", "").Replace(" ", "")}{num}";
         }
 
-        void SetDatas(string requestID, DateTime sendedDate, DateTime arrivedDate, RequestState state, RequestType requestCommand, byte[] data)
+        private void SetDatas(string requestID, DateTime sendedDate, DateTime arrivedDate, RequestState state, RequestType requestCommand, byte[] data)
         {
             RequestID = requestID ?? throw new ArgumentNullException(nameof(requestID));
             CreatedDate = sendedDate;

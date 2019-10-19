@@ -1,10 +1,7 @@
 ﻿using KilokoModelLibrary;
 using LuxScanOrdModel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LuxScanRawItems
 {
@@ -20,7 +17,7 @@ namespace LuxScanRawItems
             Models = new List<KilokoModel>();
         }
 
-        KilokoModel GetModel(string number)
+        private KilokoModel GetModel(string number)
         {
             var model = (from kiloko in Models where kiloko.RawKiloko == number select kiloko).FirstOrDefault();
 

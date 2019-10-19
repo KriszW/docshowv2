@@ -8,7 +8,7 @@ namespace InItClientProgram
 {
     public class ShortcutOperations
     {
-        static void CreateShortcut()
+        private static void CreateShortcut()
         {
             //a shortcut beállításai és létrehozzása
             string shortcutTargetLoc = Directory.GetCurrentDirectory() + "\\" + Assembly.GetExecutingAssembly().FullName.Split(',')[0] + ".exe";
@@ -25,7 +25,7 @@ namespace InItClientProgram
         public static void SetStartUp()
         {
             //ha nincs shortcut akkor létrehozza
-            if(!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\KijelzoClient.lnk"))
+            if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\KijelzoClient.lnk"))
             {
                 CreateShortcut();
             }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ItemNumberManager
 {
@@ -39,6 +36,5 @@ namespace ItemNumberManager
         public string MaterialName { get; private set; }
         public string Mask { get; set; }
         public List<PDFModel> PDFs { get; private set; }
-
     }
 }

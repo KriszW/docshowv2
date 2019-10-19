@@ -1,21 +1,17 @@
 ﻿using SendedModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TCPServer
 {
     public class RequestManager
     {
-
         public RequestManager(Request request, IRequestMethods methods)
         {
             Request = request ?? throw new ArgumentNullException(nameof(request));
 
             Methods = methods;
         }
+
         public Request Request { get; private set; }
 
         public IRequestMethods Methods { get; private set; }
@@ -31,14 +27,14 @@ namespace TCPServer
             return output;
         }
 
-        System.Reflection.MethodInfo GetMethod()
+        private System.Reflection.MethodInfo GetMethod()
         {
             var method = typeof(IRequestMethods).GetMethod(Request.Command.ToString());
 
             return method;
         }
 
-        byte[] ExecuteRequest()
+        private byte[] ExecuteRequest()
         {
             var method = GetMethod();
 
@@ -59,7 +55,7 @@ namespace TCPServer
                         data = Serializer.Serialize(Request);
                     }
                 }
-                
+
                 return (byte[])data;
             }
             else
@@ -69,7 +65,7 @@ namespace TCPServer
             }
         }
 
-        void EndRequest()
+        private void EndRequest()
         {
             Request.State = RequestState.Finished;
             Request.FinishedDate = DateTime.Now;

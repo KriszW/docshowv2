@@ -1,12 +1,5 @@
 ﻿using LuxScanOrdModel;
-using LuxScanOrdReader;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SendOutModels;
-using TCPServer;
 
 namespace LuxScanRawItems
 {
@@ -14,7 +7,6 @@ namespace LuxScanRawItems
     {
         public OrderConverterToModel()
         {
-
         }
 
         public List<LuxScanItem> Convert(string path)

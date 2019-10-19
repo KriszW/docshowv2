@@ -1,13 +1,10 @@
-﻿using System;
+﻿using EasyTcp;
+using EasyTcp.Server;
+using SendedModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
-using EasyTcp;
-using EasyTcp.Server;
-using Machines;
-using SendedModels;
 
 namespace TCPServer
 {
@@ -27,7 +24,8 @@ namespace TCPServer
 
         private void DataReceived(object sender, Message e)
         {
-            Task.Run(()=> {
+            Task.Run(() =>
+            {
                 var request = (Request)Serializer.Deserialize(e.Data);
                 var requestManager = new RequestManager(request, new RequestMethods(request));
 
@@ -35,7 +33,7 @@ namespace TCPServer
 
                 if (reply != default && reply.Length > 0)
                 {
-                    Server.Send(e.Socket,reply);
+                    Server.Send(e.Socket, reply);
                 }
             });
         }
@@ -47,7 +45,7 @@ namespace TCPServer
 
         public void CreateNewClient(Socket soc)
         {
-            var client = new ServerClient(this,soc);
+            var client = new ServerClient(this, soc);
 
             Clients.Add(client);
         }

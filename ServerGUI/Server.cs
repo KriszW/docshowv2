@@ -1,19 +1,14 @@
 ﻿using KilokoModelLibrary;
+using LuxScanOrdReader;
 using LuxScanRawItems;
 using Machines;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TCPServer;
-using LuxScanOrdReader;
-using SendOutModels;
-using LuxScanOrdModel;
 
 namespace ServerGUI
 {
@@ -26,6 +21,7 @@ namespace ServerGUI
         public BindingList<MachinesToGUIModel> GUIModels { get; set; }
 
         private bool _IsUpdating;
+
         public Server()
         {
             InitializeComponent();
@@ -34,7 +30,6 @@ namespace ServerGUI
 
             OrdReader.CopySucceeded += OrdReader_CopySucceeded;
 
-
             CreateTimer();
 
             GUIModels = new BindingList<MachinesToGUIModel>();
@@ -42,16 +37,15 @@ namespace ServerGUI
             DGV_Kilokok.DataSource = GUIModels;
         }
 
-        void CreateTimer()
+        private void CreateTimer()
         {
             ReaderTimer = new Timer();
             ReaderTimer.Interval = 1000;
             ReaderTimer.Tick += ReaderTimer_Tick;
             //ReaderTimer.Start();
-
         }
 
-        void UpdateGUI(List<KilokoModel> models)
+        private void UpdateGUI(List<KilokoModel> models)
         {
             foreach (var newModel in models)
             {
@@ -74,7 +68,7 @@ namespace ServerGUI
             UpdateDataSource();
         }
 
-        void MakeUpdate(System.IO.FileInfo file)
+        private void MakeUpdate(System.IO.FileInfo file)
         {
             var converter = new OrderConverterToModel();
 
@@ -97,18 +91,19 @@ namespace ServerGUI
             UpdateORDFileInfos();
         }
 
-        void UpdateORDFileInfos()
+        private void UpdateORDFileInfos()
         {
             if (InvokeRequired)
             {
-                DGV_Kilokok.Invoke(new Action(() => {
+                DGV_Kilokok.Invoke(new Action(() =>
+                {
                     UpdateORDFileInfos();
                 }));
             }
             else
             {
                 LBL_LastUpdate.Text = DateTime.Now.ToString();
-                LBL_OrdFileInfos.Text = "Név: " + OrdReader.OrderFile.Name+"\nMódosítás dátuma: "+OrdReader.OrderFile.LastWriteTime.ToString();
+                LBL_OrdFileInfos.Text = "Név: " + OrdReader.OrderFile.Name + "\nMódosítás dátuma: " + OrdReader.OrderFile.LastWriteTime.ToString();
             }
         }
 
@@ -116,7 +111,8 @@ namespace ServerGUI
         {
             if (OrdReader.OrderFile == default || args.NewFile.LastWriteTime > OrdReader.OrderFile.LastWriteTime)
             {
-                await Task.Run(()=> {
+                await Task.Run(() =>
+                {
                     MakeUpdate(args.NewFile);
                 });
             }
@@ -135,11 +131,12 @@ namespace ServerGUI
             }
         }
 
-        void UpdateDataSource()
+        private void UpdateDataSource()
         {
             if (DGV_Kilokok.InvokeRequired)
             {
-                DGV_Kilokok.Invoke(new Action(()=> {
+                DGV_Kilokok.Invoke(new Action(() =>
+                {
                     UpdateDataSource();
                 }));
             }
@@ -151,7 +148,7 @@ namespace ServerGUI
             }
         }
 
-        void SetClientState(System.Net.Sockets.Socket e,bool state)
+        private void SetClientState(System.Net.Sockets.Socket e, bool state)
         {
             var ip = e.RemoteEndPoint.ToString().Split(':')[0];
 
@@ -170,7 +167,7 @@ namespace ServerGUI
         {
             DocsShowServer.DocsShow.RemoveClient(e);
 
-            SetClientState(e,false);
+            SetClientState(e, false);
         }
 
         private void Server_ClientConnected(object sender, System.Net.Sockets.Socket e)
@@ -190,7 +187,7 @@ namespace ServerGUI
 
             foreach (var item in MachineModel.Machines)
             {
-                var newModel = new MachinesToGUIModel(item.KilokoNum,"","","",false);
+                var newModel = new MachinesToGUIModel(item.KilokoNum, "", "", "", false);
                 GUIModels.Add(newModel);
             }
 

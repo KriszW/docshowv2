@@ -1,16 +1,12 @@
-﻿using LuxScanOrdModel;
-using ItemNumberManager;
-using KilokoModelLibrary;
-using System;
+﻿using KilokoModelLibrary;
+using LuxScanOrdModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
 
 namespace LuxScanRawItems
 {
-    class GetRawItems
+    internal class GetRawItems
     {
         public event OnNewLuxscanItems NewItems;
 
@@ -62,6 +58,7 @@ namespace LuxScanRawItems
                             }
 
                             break;
+
                         case "ItemName":
 
                             var rawItem = RawItems.Where(r => r.ID == id).FirstOrDefault();
@@ -81,6 +78,7 @@ namespace LuxScanRawItems
 
             return RawItems;
         }
+
         public string GetItemType(string rawLine)
         {
             var output = "";
@@ -102,7 +100,7 @@ namespace LuxScanRawItems
 
         public bool IsUsableItem(string rawLine)
         {
-            var usableItems = new string[] {"ItemName" };
+            var usableItems = new string[] { "ItemName" };
 
             foreach (var item in usableItems)
             {
@@ -115,7 +113,7 @@ namespace LuxScanRawItems
             return false;
         }
 
-        bool IsActiveItem(string rawLine)
+        private bool IsActiveItem(string rawLine)
         {
             var activeMark = "F";
             var activePos = 7;

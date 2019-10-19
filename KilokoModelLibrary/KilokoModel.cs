@@ -1,13 +1,13 @@
-﻿using System;
+﻿using ItemNumberManager;
+using System;
 using System.Collections.Generic;
-using ItemNumberManager;
 
 namespace KilokoModelLibrary
 {
     [Serializable]
     public enum KilokoPosition
     {
-        None ,
+        None,
         Left,
         Right
     }
@@ -26,7 +26,7 @@ namespace KilokoModelLibrary
             Items = new List<ItemNumber>();
         }
 
-        int GetKilokoNumber()
+        private int GetKilokoNumber()
         {
             var tempLine = "";
 
@@ -41,7 +41,7 @@ namespace KilokoModelLibrary
             return int.Parse(tempLine);
         }
 
-        void SetPosition()
+        private void SetPosition()
         {
             Position = KilokoPosition.None;
 

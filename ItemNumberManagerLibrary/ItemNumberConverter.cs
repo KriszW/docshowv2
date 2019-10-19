@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ItemNumberManager
 {
@@ -10,7 +8,7 @@ namespace ItemNumberManager
     {
         public static List<string> Lines { get; set; }
 
-        static bool UsableItem(string itemNum, string mask)
+        private static bool UsableItem(string itemNum, string mask)
         {
             //az egész cikken végig kell menni karakterenként
             for (int i = 0; i < mask.Length; i++)
@@ -48,7 +46,7 @@ namespace ItemNumberManager
             return true;
         }
 
-        static PDFekModel GetPDFek(string itemNum)
+        private static PDFekModel GetPDFek(string itemNum)
         {
             foreach (var item in Lines)
             {
@@ -56,20 +54,20 @@ namespace ItemNumberManager
                 if (UsableItem(itemNum, mask))
                 {
                     var datas = item.Split(";".ToCharArray(), 3, StringSplitOptions.RemoveEmptyEntries);
-                    return new PDFekModel(datas[0],datas[1].Split(';'));
+                    return new PDFekModel(datas[0], datas[1].Split(';'));
                 }
             }
 
             return null;
         }
 
-        static string GetName(string[] raws)
+        private static string GetName(string[] raws)
         {
             var output = "";
 
-            for (int i = 0; i < raws.Length-1; i++)
+            for (int i = 0; i < raws.Length - 1; i++)
             {
-                output += raws[i]+" ";
+                output += raws[i] + " ";
             }
 
             return output.Trim(' ');

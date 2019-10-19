@@ -1,9 +1,6 @@
 ﻿using SendedModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TCPServer
 {
@@ -13,6 +10,7 @@ namespace TCPServer
         {
             Request = request ?? throw new ArgumentNullException(nameof(request));
         }
+
         public Request Request { get; private set; }
 
         public byte[] DocsSend(PositionModel model)
@@ -23,7 +21,7 @@ namespace TCPServer
         public byte[] MachineModelSet(MachineSetModel model)
         {
             var client = (from c in DocsShowServer.DocsShow.Clients
-                          where c.ClientSocket.RemoteEndPoint.ToString().StartsWith(model.IP) && 
+                          where c.ClientSocket.RemoteEndPoint.ToString().StartsWith(model.IP) &&
                           c.ClientSocket.RemoteEndPoint.ToString().EndsWith(model.Port.ToString())
                           select c).SingleOrDefault();
 

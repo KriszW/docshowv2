@@ -1,13 +1,12 @@
-﻿using IOs;
-using System;
+﻿using System;
 
 namespace EndMethodsLibrary
 {
     public static class EndMethods
     {
-        public static void End(string msg = "",int exitCode = 100)
+        public static void End(string msg = "", int exitCode = 100)
         {
-            if (msg!="")
+            if (msg != "")
             {
                 Console.WriteLine($"{DateTime.Now.ToString()}:{msg}");
                 Logger.MakeLog(msg);

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LuxScanOrdReader
 {
-
-
     public delegate void OnLuxScanFileCopyError(object sender, FileCountArgs args);
-    public delegate void OnSuccessFileCopy(object sender,SuccessFileCopyArgs args );
+
+    public delegate void OnSuccessFileCopy(object sender, SuccessFileCopyArgs args);
+
     public class FileCountArgs : EventArgs
     {
         public FileCountArgs(string[] filenames, int count)
@@ -31,7 +27,8 @@ namespace LuxScanOrdReader
             NewFile = ordFile;
             ReadTime = DateTime.Now;
         }
-        public SuccessFileCopyArgs(FileInfo ordFile,DateTime date)
+
+        public SuccessFileCopyArgs(FileInfo ordFile, DateTime date)
         {
             NewFile = ordFile;
             ReadTime = date;

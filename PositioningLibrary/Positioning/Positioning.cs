@@ -1,10 +1,10 @@
-﻿using SendedModels;
+﻿using KilokoModelLibrary;
+using SendedModels;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using KilokoModelLibrary;
 
 namespace PositioningLib
 {
@@ -22,7 +22,7 @@ namespace PositioningLib
                 {
                     var pos = (KilokoPosition)index;
 
-                    SplitForOneSide(item, rect,pos);
+                    SplitForOneSide(item, rect, pos);
 
                     index++;
                 }
@@ -33,9 +33,9 @@ namespace PositioningLib
             }
         }
 
-
         #region display manager
-        static bool SplitForOneSide(PDFModel model, Rectangle screen, KilokoPosition pos)
+
+        private static bool SplitForOneSide(PDFModel model, Rectangle screen, KilokoPosition pos)
         {
             //ha a standard empty vagy nyitva van akkor nem kell csinálnia semmit
             if (model.PDFFileName.EndsWith(".pdf") == false)
@@ -47,7 +47,7 @@ namespace PositioningLib
             string args = ProcessOperations.SetArguments(model.PDFFileName);
 
             //az adobe program elindítása a megadott argumentumokkal
-            Process adobeProc =  ProcessOperations.StartAdobe(args);
+            Process adobeProc = ProcessOperations.StartAdobe(args);
 
             //a megfelelő helyre állítása a megadott monitoron a megadott helyre
             SetForGoodPosition(screen, pos);
@@ -58,7 +58,7 @@ namespace PositioningLib
             return true;
         }
 
-        static IntPtr GetMainWindowHandle(Process process)
+        private static IntPtr GetMainWindowHandle(Process process)
         {
             IntPtr output = IntPtr.Zero;
 
@@ -90,7 +90,7 @@ namespace PositioningLib
             return output;
         }
 
-        static void SetForGoodPosition(Rectangle screen, KilokoPosition pos)
+        private static void SetForGoodPosition(Rectangle screen, KilokoPosition pos)
         {
             //az előtérben lévő program pointerének megszerzése
             IntPtr hwWindowHandle = NativeMethods.GetForegroundWindow();
@@ -101,11 +101,13 @@ namespace PositioningLib
             switch (pos)
             {
                 case KilokoPosition.Left:
-                    NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X, screen.Y, halfWidth , screen.Height, SWD.SHOWWINDOW);
+                    NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X, screen.Y, halfWidth, screen.Height, SWD.SHOWWINDOW);
                     break;
+
                 case KilokoPosition.Right:
-                    NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X +halfWidth, screen.Y, halfWidth, screen.Height, SWD.SHOWWINDOW);
+                    NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X + halfWidth, screen.Y, halfWidth, screen.Height, SWD.SHOWWINDOW);
                     break;
+
                 default:
                     NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X, screen.Y, halfWidth, screen.Height, SWD.SHOWWINDOW);
                     break;
@@ -115,6 +117,6 @@ namespace PositioningLib
             NativeMethods.SetForegroundWindow(hwWindowHandle);
         }
 
-        #endregion
+        #endregion display manager
     }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EasyTcp.Client;
+﻿using PositioningLib;
 using SendedModels;
+using System;
+using System.Threading.Tasks;
 using TCPServer;
-using PositioningLib;
 
 namespace TCPClient
 {
@@ -38,7 +34,7 @@ namespace TCPClient
 
         public bool Connect()
         {
-            Client.Connect(ServerIP, ServerPort, new TimeSpan(0, 0, 30),ushort.MaxValue);
+            Client.Connect(ServerIP, ServerPort, new TimeSpan(0, 0, 30), ushort.MaxValue);
 
             if (Client.IsConnected)
             {
@@ -53,7 +49,7 @@ namespace TCPClient
             return Client.IsConnected;
         }
 
-        Request CreateRequest()
+        private Request CreateRequest()
         {
             var machineModel = new MachineSetModel(MonitorIndex, MyIP, MyPort);
 
@@ -67,15 +63,15 @@ namespace TCPClient
             return request;
         }
 
-        void SetupMachineData()
+        private void SetupMachineData()
         {
             Client.Send(Serializer.Serialize(CreateRequest()));
         }
 
         private void Client_DataReceived(object sender, EasyTcp.Message e)
         {
-            Task.Run(() => {
-
+            Task.Run(() =>
+            {
                 var request = (Request)Serializer.Deserialize(e.Data);
                 var requestManager = new RequestManager(request, new RequestMethods(request));
 

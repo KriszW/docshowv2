@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Machines
 {
@@ -29,7 +25,7 @@ namespace Machines
                     var ip = datas[1];
                     var monitorIndex = int.Parse(datas[2]);
 
-                    var model = new MachineModel(ip,monitorIndex,kilokoNum);
+                    var model = new MachineModel(ip, monitorIndex, kilokoNum);
                     output.Add(model);
                 }
             }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SendedModels
 {
@@ -24,6 +19,5 @@ namespace SendedModels
             using (var memoryStream = new MemoryStream(message))
                 return (new BinaryFormatter()).Deserialize(memoryStream);
         }
-
     }
 }

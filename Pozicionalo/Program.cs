@@ -1,16 +1,11 @@
-﻿using EndMethodsLibrary;
-using InItClientProgram;
-using PositioningLib;
-using System;
-using System.Net.Sockets;
+﻿using InItClientProgram;
 using System.Threading.Tasks;
-using TCPClient;
 
 namespace DocsShowClient
 {
-    class Program
-    { 
-        static void Main(string[] args)
+    internal class Program
+    {
+        private static void Main(string[] args)
         {
             //a shortcut managing elintézése
             ShortcutOperations.SetStartUp();

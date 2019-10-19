@@ -1,13 +1,11 @@
-﻿using IOs;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 
 namespace PositioningLib
 {
-    class ProcessOperations
+    internal class ProcessOperations
     {
         #region ReaderManager start
 
@@ -15,49 +13,56 @@ namespace PositioningLib
         public static void StartReader()
         {
             //a reader.exe helyi mappában kell hogy legyen
-            ProcessStartInfo procInfo = new ProcessStartInfo {
+            ProcessStartInfo procInfo = new ProcessStartInfo
+            {
                 FileName = "reader.exe",
                 UseShellExecute = false
             };
             Process ProcMakePos = new Process();
-            try {
+            try
+            {
                 //a program elindítása
                 ProcMakePos = Process.Start(procInfo);
             }
-            catch (InvalidOperationException){
+            catch (InvalidOperationException)
+            {
                 Console.WriteLine($"{DateTime.Now.ToString()}:A redear.exe (Ami eltűnteti a felesleges dolgokat és reader módba állítja a pdfet) nem tudott elindulni");
                 return;
             }
-            catch (Win32Exception) {
+            catch (Win32Exception)
+            {
                 Console.WriteLine($"{DateTime.Now.ToString()}:A redear.exe (Ami eltűnteti a felesleges dolgokat és reader módba állítja a pdfet) nem található");
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Console.WriteLine($"{DateTime.Now.ToString()}:A redear.exe (Ami eltűnteti a felesleges dolgokat és reader módba állítja a pdfet) nem tudott elindulni");
                 return;
             }
 
-            try {
+            try
+            {
                 //ha még nem futott volna le akkor várjon
-                while (!ProcMakePos.HasExited) {
+                while (!ProcMakePos.HasExited)
+                {
                     Thread.Sleep(100);
                 }
             }
-            catch (NullReferenceException) {
-
+            catch (NullReferenceException)
+            {
             }
-            catch (Exception) {
-
+            catch (Exception)
+            {
             }
         }
 
-        #endregion
+        #endregion ReaderManager start
 
         #region adobe things
 
         //az adobéhez a az indítása argumentumok megadása
         public static string SetArguments(string fileName)
         {
-            var filePath = Datas.PDFsPath+fileName;
+            var filePath = Datas.PDFsPath + fileName;
 
             var arg = $"/n /A \"page=1&zoom={Datas.ZoomScale}&scrollbar=0\" \"{filePath}\"";
 
@@ -72,15 +77,16 @@ namespace PositioningLib
             ProcessStartInfo adobeStartInfo = new ProcessStartInfo()
             {
                 FileName = Datas.PathToPDFReader,
-                Arguments = args,                
+                Arguments = args,
             };
 
-
-            try {
+            try
+            {
                 //az adobe program elindítása
                 process = Process.Start(adobeStartInfo);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine($"{DateTime.Now.ToString()}:A PDF olvasó nem található vagy valami más hiba lépett fel");
                 Logger.MakeLog("A PDF olvasó elinditása közben hiba lépett fel: " + ex.Message);
                 return null;
@@ -95,6 +101,6 @@ namespace PositioningLib
             return process;
         }
 
-        #endregion
+        #endregion adobe things
     }
 }

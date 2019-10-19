@@ -1,11 +1,9 @@
 ﻿using KilokoModelLibrary;
+using Machines;
+using SendedModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Machines;
-using SendedModels;
 using TCPServer;
 
 namespace SendOutModels
@@ -18,10 +16,9 @@ namespace SendOutModels
 
         public SendOutModels()
         {
-
         }
 
-        Dictionary<MachineModel,PositionModel> GetModels()
+        private Dictionary<MachineModel, PositionModel> GetModels()
         {
             var output = new Dictionary<MachineModel, PositionModel>();
 
@@ -31,16 +28,16 @@ namespace SendOutModels
 
                 if (machine != default)
                 {
-                    var model = GetModelFromMachine(machine,item);
+                    var model = GetModelFromMachine(machine, item);
 
-                    output.Add(machine,model);
+                    output.Add(machine, model);
                 }
             }
 
             return output;
         }
 
-        PositionModel GetModelFromMachine(MachineModel machine, KilokoModel item)
+        private PositionModel GetModelFromMachine(MachineModel machine, KilokoModel item)
         {
             var model = new PositionModel(item.Position, machine.MonitorIndex);
 
@@ -54,11 +51,10 @@ namespace SendOutModels
                 }
             }
 
-
             return model;
         }
 
-        void SendDatasOutToClient(KeyValuePair<MachineModel, PositionModel> item)
+        private void SendDatasOutToClient(KeyValuePair<MachineModel, PositionModel> item)
         {
             var machine = item.Key;
             var data = Serializer.Serialize((object)item.Value);
@@ -76,7 +72,7 @@ namespace SendOutModels
 
                 var requestData = Serializer.Serialize(request);
 
-                DocsShowServer.DocsShow.Server.Send(client.ClientSocket,requestData);
+                DocsShowServer.DocsShow.Server.Send(client.ClientSocket, requestData);
             }
         }
 
@@ -89,7 +85,8 @@ namespace SendOutModels
                 SendDatasOutToClient(item);
             }
         }
-        MachineModel GetMachine(int kilokoNum)
+
+        private MachineModel GetMachine(int kilokoNum)
         {
             foreach (var item in Machines)
             {

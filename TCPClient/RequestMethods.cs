@@ -1,9 +1,5 @@
 ﻿using SendedModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TCPClient
 {
@@ -13,6 +9,7 @@ namespace TCPClient
         {
             Request = request ?? throw new ArgumentNullException(nameof(request));
         }
+
         public Request Request { get; private set; }
 
         public byte[] DocsSend(PositionModel model)

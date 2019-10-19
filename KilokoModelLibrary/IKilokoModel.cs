@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ItemNumberManager;
+﻿using ItemNumberManager;
+using System.Collections.Generic;
 
 namespace KilokoModelLibrary
 {
@@ -11,7 +11,9 @@ namespace KilokoModelLibrary
         List<ItemNumber> Items { get; set; }
 
         void AddNewCikk(string cikk, string name, string mask, string[] names);
+
         void AddNewCikk(ItemNumber item);
+
         void AddNewCikk(string rawLine);
 
         void DeleteAllCikk();
