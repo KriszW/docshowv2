@@ -10,17 +10,23 @@ namespace TCPClient
         {
             Clients = new DocsShowClient[monitorCount];
 
-            var successConnect = false;
-
             for (int i = 0; i < monitorCount; i++)
             {
                 Clients[i] = new DocsShowClient(Datas.ServerIP, Datas.Port, i);
-
-                while (successConnect == false)
-                {
-                    successConnect = Clients[i].Connect();
-                }
+                var res = TryConnect(i);
             }
+        }
+
+        private static bool TryConnect(int i)
+        {
+            var successConnect = false;
+
+            while (successConnect == false)
+            {
+                successConnect = Clients[i].Connect();
+            }
+
+            return successConnect;
         }
     }
 }

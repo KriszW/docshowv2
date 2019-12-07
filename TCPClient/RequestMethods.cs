@@ -12,15 +12,26 @@ namespace TCPClient
 
         public Request Request { get; private set; }
 
+        private static object _printLock = new object();
+
         public byte[] DocsSend(PositionModel model)
+        {
+            System.Threading.Thread.Sleep(model.MonitorIndex * 5000);
+            lock (_printLock)
+            {
+                Position(model);
+            }
+
+            return default;
+        }
+
+        private static void Position(PositionModel model)
         {
             var client = ClientStarter.Clients[model.MonitorIndex];
 
             client.Monitor.AddNewModel(model);
 
             client.Monitor.Position();
-
-            return default;
         }
 
         public byte[] MachineModelSet(MachineSetModel model)

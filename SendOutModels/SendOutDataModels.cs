@@ -8,19 +8,15 @@ using TCPServer;
 
 namespace SendOutModels
 {
-    public class SendOutModels
+    public class SendOutDataModels
     {
         public List<KilokoModel> Models { get; set; }
 
-        public List<MachineModel> Machines { get; set; }
+        public List<Machine> Machines { get; set; }
 
-        public SendOutModels()
+        private IEnumerable<SendOutModel> GetModels()
         {
-        }
-
-        private Dictionary<MachineModel, PositionModel> GetModels()
-        {
-            var output = new Dictionary<MachineModel, PositionModel>();
+            var output = new List<SendOutModel>();
 
             foreach (var item in Models)
             {
@@ -28,25 +24,25 @@ namespace SendOutModels
 
                 if (machine != default)
                 {
-                    var model = GetModelFromMachine(machine, item);
+                    var model = GetModelFromMachine(new SendOutKilokoModel(machine,item));
 
-                    output.Add(machine, model);
+                    output.Add(new SendOutModel(machine,model));
                 }
             }
 
             return output;
         }
 
-        private PositionModel GetModelFromMachine(MachineModel machine, KilokoModel item)
+        private PositionModel GetModelFromMachine(SendOutKilokoModel soModel)
         {
-            var model = new PositionModel(item.Position, machine.MonitorIndex);
+            var model = new PositionModel(soModel.Kiloko.Position, soModel.Machine.MonitorIndex);
 
-            foreach (var material in item.Items)
+            foreach (var material in soModel.Kiloko.Items)
             {
                 foreach (var pdf in material.PDFs)
                 {
                     var pdfModel = new PDFModel(pdf.FileName);
-                    pdfModel.MonitorIndex = machine.MonitorIndex;
+                    pdfModel.MonitorIndex = soModel.Machine.MonitorIndex;
                     model.PDF.Add(pdfModel);
                 }
             }
@@ -54,12 +50,12 @@ namespace SendOutModels
             return model;
         }
 
-        private void SendDatasOutToClient(KeyValuePair<MachineModel, PositionModel> item)
+        private void SendDatasOutToClient(SendOutModel model)
         {
-            var machine = item.Key;
-            var data = Serializer.Serialize((object)item.Value);
+            var machine = model.Machine;
+            var data = Serializer.Serialize((object)model.Data);
 
-            var client = (from tcpClient in DocsShowServer.DocsShow.Clients where tcpClient.Machine.Equals(machine) select tcpClient).SingleOrDefault();
+            var client = (from tcpClient in DocsShowServer.DocsShow.Clients where tcpClient.Machine.IsSame(machine) select tcpClient).SingleOrDefault();
 
             if (client != default)
             {
@@ -86,7 +82,7 @@ namespace SendOutModels
             }
         }
 
-        private MachineModel GetMachine(int kilokoNum)
+        private Machine GetMachine(int kilokoNum)
         {
             foreach (var item in Machines)
             {

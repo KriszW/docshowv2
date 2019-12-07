@@ -27,7 +27,7 @@ namespace TCPServer
 
             if (client != null)
             {
-                var machine = (from machineModel in Machines.MachineModel.Machines where machineModel.IP == model.IP && machineModel.MonitorIndex == model.MonitorIndex select machineModel).SingleOrDefault();
+                var machine = (from machineModel in Machines.Machine.Machines where machineModel.IP == model.IP && machineModel.MonitorIndex == model.MonitorIndex select machineModel).SingleOrDefault();
 
                 if (machine != default)
                 {

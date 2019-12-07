@@ -44,7 +44,7 @@ namespace Machines
 
         public string GetIP()
         {
-            var machine = MachineModel.Machines.Where(m => m.KilokoNum == Kiloko).FirstOrDefault();
+            var machine = Machine.Machines.Where(m => m.KilokoNum == Kiloko).FirstOrDefault();
 
             return machine != default ? machine.IP : (default);
         }

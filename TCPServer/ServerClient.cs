@@ -8,7 +8,7 @@ namespace TCPServer
         public Socket ClientSocket { get; set; }
         public DocsShowServer Server { get; private set; }
 
-        public MachineModel Machine { get; set; }
+        public Machine Machine { get; set; }
 
         public ServerClient(DocsShowServer server, Socket socket)
         {

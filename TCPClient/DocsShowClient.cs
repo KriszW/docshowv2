@@ -1,4 +1,5 @@
-﻿using PositioningLib;
+﻿using EasyTcp.Client;
+using PositioningLib;
 using SendedModels;
 using System;
 using System.Threading.Tasks;

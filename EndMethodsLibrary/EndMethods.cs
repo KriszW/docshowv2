@@ -9,7 +9,6 @@ namespace EndMethodsLibrary
             if (msg != "")
             {
                 Console.WriteLine($"{DateTime.Now.ToString()}:{msg}");
-                Logger.MakeLog(msg);
             }
 
             Console.WriteLine("Nyomjon entert a kilépéshez...");

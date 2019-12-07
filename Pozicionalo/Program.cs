@@ -1,22 +1,19 @@
-﻿using InItClientProgram;
-using System.Threading.Tasks;
-
-namespace DocsShowClient
+﻿namespace DocsShowClient
 {
     internal class Program
     {
         private static void Main(string[] args)
         {
             //a shortcut managing elintézése
-            ShortcutOperations.SetStartUp();
+            InItClientProgram.ShortcutOperations.SetStartUp();
 
             //ha kell akkor az ablak elrejtése
-            InitMainProgram.Hide();
+            InItClientProgram.InitMainProgram.Hide();
 
             //a szükséges paraméterek betöltése
-            InitMainProgram.SetUpParams();
+            InItClientProgram.InitMainProgram.SetUpParams();
 
-            Task.Delay(-1).Wait();
+            System.Console.ReadLine();
         }
     }
 }

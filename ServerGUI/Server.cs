@@ -68,7 +68,7 @@ namespace ServerGUI
             UpdateDataSource();
         }
 
-        private void MakeUpdate(System.IO.FileInfo file)
+        public void MakeUpdate(System.IO.FileInfo file)
         {
             var converter = new OrderConverterToModel();
 
@@ -77,9 +77,9 @@ namespace ServerGUI
             var grouper = new KilokoGrouper(datas);
             var reals = grouper.GroupKilokok();
 
-            var models = new SendOutModels.SendOutModels()
+            var models = new SendOutModels.SendOutDataModels()
             {
-                Machines = MachineModel.Machines,
+                Machines = Machine.Machines,
                 Models = reals
             };
 
@@ -182,10 +182,10 @@ namespace ServerGUI
             KilokoModel.Kilokok = new List<KilokoModel>();
             ItemNumberManager.ItemNumberConverter.Lines = System.IO.File.ReadAllLines(@"K:\programs\DocShow\Common\pdfek.csv").ToList();
 
-            var machineLoader = new MachineLoader(@"C:\Users\itdiak.lkr-h\OneDrive - VELUX\Projects\pozicionalo\Pozicionalo\ServerGUI\bin\Debug\gépek.csv");
-            MachineModel.Machines = machineLoader.Load();
+            var machineLoader = new MachineLoader(@"gépek.csv");
+            Machine.Machines = machineLoader.Load();
 
-            foreach (var item in MachineModel.Machines)
+            foreach (var item in Machine.Machines)
             {
                 var newModel = new MachinesToGUIModel(item.KilokoNum, "", "", "", false);
                 GUIModels.Add(newModel);
@@ -207,7 +207,13 @@ namespace ServerGUI
         {
             if (DocsShowServer.DocsShow.Clients.Count > 0)
             {
-                await Task.Run(() => OrdReader.CopyOrderFile());
+                await Task.Run(() => { 
+                    OrdReader.CopyOrderFile();
+                    if (OrdReader.OrderFile != default)
+                    {
+                        MakeUpdate(OrdReader.OrderFile); 
+                    }
+                });
             }
         }
 

@@ -31,8 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EasyTcp, Version=2.0.4.1, Culture=neutral, PublicKeyToken=3d9d367bfd3b4d17, processorArchitecture=MSIL">
-      <HintPath>..\packages\EasyTcp.2.0.4.1\lib\netstandard2.0\EasyTcp.dll</HintPath>
+    <Reference Include="EasyTcp, Version=2.0.4.2, Culture=neutral, PublicKeyToken=3d9d367bfd3b4d17, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyTcp.2.0.4.2\lib\netstandard2.0\EasyTcp.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,9 +54,6 @@
     <Compile Include="RequestMethods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PositioningLibrary\PositioningLibrary.csproj">
       <Project>{918c1bcb-26f8-4549-9243-439037fc4d2b}</Project>
       <Name>PositioningLibrary</Name>
@@ -62,6 +62,9 @@
       <Project>{0b5cf7b5-ed38-4e0c-9f48-51449b05b7f4}</Project>
       <Name>SendedModelsLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,7 +6,7 @@ namespace SendedModels
     public enum RequestState
     {
         Unknow = -10,
-        Created,
+        Created = 0,
         Pending,
         Executing,
         Finished

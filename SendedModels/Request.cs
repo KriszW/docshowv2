@@ -34,8 +34,9 @@ namespace SendedModels
         public string GenerateID()
         {
             var num = (long)(new Random().Next(int.MaxValue / 2, int.MaxValue) * int.MaxValue);
+            var time = DateTime.Now;
 
-            return $"{DateTime.Now.ToShortDateString().Replace(".", "").Replace(" ", "")}{num}";
+            return $"{time.Year}{time.Month}{time.Day}{time.Hour}{time.Minute}{time.Second}{time.Millisecond}{num}";
         }
 
         private void SetDatas(string requestID, DateTime sendedDate, DateTime arrivedDate, RequestState state, RequestType requestCommand, byte[] data)

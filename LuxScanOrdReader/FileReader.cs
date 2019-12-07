@@ -62,7 +62,8 @@ namespace LuxScanOrdReader
 
             if (files.Count == 1)
             {
-                CopySucceeded?.Invoke(this, new SuccessFileCopyArgs(new FileInfo(files[0])));
+                var newFile = new FileInfo(files[0]);
+                CopySucceeded?.Invoke(this, new SuccessFileCopyArgs(newFile));
             }
             else
             {

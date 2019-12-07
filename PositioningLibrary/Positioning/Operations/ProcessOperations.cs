@@ -64,7 +64,7 @@ namespace PositioningLib
         {
             var filePath = Datas.PDFsPath + fileName;
 
-            var arg = $"/n /A \"page=1&zoom={Datas.ZoomScale}&scrollbar=0\" \"{filePath}\"";
+            var arg = $"/n /A \"page=1&zoom={Datas.ZoomScale}&scrollbar=0&view=FitH\" \"{filePath}\"";
 
             return arg;
         }
@@ -88,7 +88,6 @@ namespace PositioningLib
             catch (Exception ex)
             {
                 Console.WriteLine($"{DateTime.Now.ToString()}:A PDF olvasó nem található vagy valami más hiba lépett fel");
-                Logger.MakeLog("A PDF olvasó elinditása közben hiba lépett fel: " + ex.Message);
                 return null;
             }
 

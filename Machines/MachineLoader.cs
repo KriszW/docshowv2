@@ -11,9 +11,9 @@ namespace Machines
             Lines = System.IO.File.ReadAllLines(path);
         }
 
-        public List<MachineModel> Load()
+        public List<Machine> Load()
         {
-            var output = new List<MachineModel>();
+            var output = new List<Machine>();
 
             foreach (var item in Lines)
             {
@@ -21,12 +21,15 @@ namespace Machines
                 {
                     var datas = item.Split(';');
 
-                    var kilokoNum = datas[0];
-                    var ip = datas[1];
-                    var monitorIndex = int.Parse(datas[2]);
+                    if (datas.Length >= 3)
+                    {
+                        var kilokoNum = datas[0];
+                        var ip = datas[1];
+                        var monitorIndex = int.Parse(datas[2]);
 
-                    var model = new MachineModel(ip, monitorIndex, kilokoNum);
-                    output.Add(model);
+                        var model = new Machine(ip, monitorIndex, kilokoNum);
+                        output.Add(model); 
+                    }
                 }
             }
 
