@@ -78,10 +78,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" x:Name="Label_FileName"/>
-                    <Label Grid.Row="1" x:Name="Label_FileLastModifiedDate"/>
-                    <Label Grid.Row="2" x:Name="Label_LastPDFUpdateDate"/>
-                    <Label Grid.Row="3" x:Name="Label_LastSuccessPDFUpdateDate"/>
+                    <Label Grid.Row="0" Content="" x:Name="Label_FileName"/>
+                    <Label Grid.Row="1" Content="" x:Name="Label_FileLastModifiedDate"/>
+                    <Label Grid.Row="2" Content="" x:Name="Label_LastPDFUpdateDate"/>
+                    <Label Grid.Row="3" Content="" x:Name="Label_LastSuccessPDFUpdateDate"/>
                 </Grid>
 
                 <Button Grid.Row="2" Grid.ColumnSpan="2" x:Name="Button_Update" Content="Frissít" Click="Button_Update_Click"/>

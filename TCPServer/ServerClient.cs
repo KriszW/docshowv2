@@ -1,5 +1,6 @@
 ﻿using Machines;
 using System.Net.Sockets;
+using System.Linq;
 
 namespace TCPServer
 {
@@ -14,6 +15,8 @@ namespace TCPServer
         {
             Server = server;
             ClientSocket = socket;
+            var ip = socket.RemoteEndPoint.ToString().Split(':')[0];
+            Machine = Machine.Machines.FirstOrDefault(m=> m.IP == ip);
         }
     }
 }

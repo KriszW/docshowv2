@@ -36,7 +36,7 @@ namespace ServerWPFGUI
         public SendOutDataModels ActiveOrder { get; set; }
         public List<KilokoModel> ActiveKilokok { get; set; }
         
-        public IReadOnlyCollection<MachinesToGUIModel> GUIModelrs { get => _dgModels.AsReadOnly(); }
+        public IReadOnlyCollection<MachinesToGUIModel> GUIModels { get => _dgModels.AsReadOnly(); }
 
         private bool _IsUpdating;
 
@@ -58,7 +58,7 @@ namespace ServerWPFGUI
             var output = new Timer();
             output.Interval = interval;
             output.Elapsed += Update;
-            //output.Start();
+            output.Start();
             return output;
         }
         private void UpdateGUI(List<KilokoModel> models)
@@ -86,6 +86,7 @@ namespace ServerWPFGUI
 
         public void MakeUpdate(System.IO.FileInfo file)
         {
+            _IsUpdating = true;
             var converter = new OrderConverterToModel();
 
             var datas = converter.Convert(file.FullName);
@@ -101,6 +102,7 @@ namespace ServerWPFGUI
             OrdReader.OrderFile = file;
 
             UpdateORDFileInfos();
+            _IsUpdating = false;
         }
 
         private void UpdateORDFileInfos()
@@ -261,6 +263,8 @@ namespace ServerWPFGUI
 
             DocsShowServer.DocsShow.Server.ClientConnected += Server_ClientConnected;
             DocsShowServer.DocsShow.Server.ClientDisconnected += Server_ClientDisconnected;
+
+            InstantUpdate();
         }
 
         private async void Button_RestartTables_Click(object sender, RoutedEventArgs e)
@@ -291,13 +295,16 @@ namespace ServerWPFGUI
         {
             if (DocsShowServer.DocsShow.Clients.Count > 0)
             {
-                await Task.Run(() => {
-                    OrdReader.CopyOrderFile();
-                    if (OrdReader.OrderFile != default)
-                    {
-                        MakeUpdate(OrdReader.OrderFile);
-                    }
-                });
+                await Task.Run(() => InstantUpdate());
+            }
+        }
+
+        private void InstantUpdate()
+        {
+            OrdReader.CopyOrderFile();
+            if (OrdReader.OrderFile != default)
+            {
+                MakeUpdate(OrdReader.OrderFile);
             }
         }
     }
