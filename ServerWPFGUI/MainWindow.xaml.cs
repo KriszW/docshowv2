@@ -56,7 +56,7 @@ namespace ServerWPFGUI
             var output = new Timer();
             output.Interval = interval;
             output.Elapsed += Update;
-            output.Start();
+            //output.Start();
             return output;
         }
         private void UpdateGUI(List<KilokoModel> models)
@@ -202,7 +202,7 @@ namespace ServerWPFGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             KilokoModel.Kilokok = new List<KilokoModel>();
-            ItemNumberConverter.Lines = System.IO.File.ReadAllLines(@"K:\programs\DocShow\Common\pdfek.csv").ToList();
+            ItemNumberConverter.Lines = System.IO.File.ReadAllLines(@"pdfek.csv").ToList();
 
             var machineLoader = new MachineLoader(@"gépek.csv");
             Machine.Machines = machineLoader.Load();
@@ -215,7 +215,7 @@ namespace ServerWPFGUI
 
             UpdateDataSource();
 
-            var codeTableConv = new CodeTableConverter(@"K:\programs\DocShow\LAM_XCUT1\CodeTable.csv");
+            var codeTableConv = new CodeTableConverter(@"CodeTable.csv");
             codeTableConv.Convert();
 
             DocsShowServer.DocsShow = new DocsShowServer();

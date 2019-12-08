@@ -10,6 +10,8 @@ namespace KilokoModelLibrary
 
         List<ItemNumber> Items { get; set; }
 
+        string GetKilokoNumFromRaw();
+
         void AddNewCikk(string cikk, string name, string mask, string[] names);
 
         void AddNewCikk(ItemNumber item);

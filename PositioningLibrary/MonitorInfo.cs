@@ -15,19 +15,15 @@ namespace PositioningLib
 
         public Screen MonitorScreen { get; private set; }
 
-        public PositionModel Model { get; private set; }
+        public Positioning Positioner { get; set; }
 
-        public void AddNewModel(PositionModel model)
+        public void Position(PositionModel model)
         {
-            if (model != default)
-            {
-                Model = model;
-            }
-        }
+            Positioner?.CloseAllAdobe();
 
-        public void Position()
-        {
-            Positioning.PositionModel(Model, MonitorScreen);
+            Positioner = new Positioning(model,MonitorScreen);
+
+            Positioner.PositionModel();
         }
     }
 }

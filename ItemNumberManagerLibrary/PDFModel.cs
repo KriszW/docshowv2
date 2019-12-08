@@ -9,7 +9,14 @@ namespace ItemNumberManager
             FileName = name ?? throw new ArgumentNullException(nameof(name));
             FilePath = $@"K:\programs\DocShow\Resources\{name}.pdf";
 
-            Datas = System.IO.File.ReadAllBytes(FilePath);
+            if (System.IO.File.Exists(FilePath))
+            {
+                Datas = System.IO.File.ReadAllBytes(FilePath); 
+            }
+            else
+            {
+                throw new ApplicationException(FilePath+ " fájl nem található");
+            }
         }
 
         public string FileName { get; private set; }

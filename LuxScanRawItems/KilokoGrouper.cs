@@ -19,7 +19,7 @@ namespace LuxScanRawItems
 
         private KilokoModel GetModel(string number)
         {
-            var model = (from kiloko in Models where kiloko.RawKiloko == number select kiloko).FirstOrDefault();
+            var model = Models.FirstOrDefault(m=> m.Kiloko.ToString() == number);
 
             if (model == default)
             {
@@ -37,7 +37,8 @@ namespace LuxScanRawItems
             {
                 foreach (var kilokoItem in item.Models)
                 {
-                    var model = GetModel(kilokoItem.RawKiloko);
+                    var kilokoNum = kilokoItem.GetKilokoNumFromRaw(); 
+                    var model = GetModel(kilokoNum);
 
                     foreach (var material in item.Items)
                     {

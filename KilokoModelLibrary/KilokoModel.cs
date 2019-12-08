@@ -26,6 +26,8 @@ namespace KilokoModelLibrary
             Items = new List<ItemNumber>();
         }
 
+        public string GetKilokoNumFromRaw() => GetKilokoNumber().ToString();
+
         private int GetKilokoNumber()
         {
             var tempLine = "";

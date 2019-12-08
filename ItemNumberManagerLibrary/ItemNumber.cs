@@ -28,7 +28,14 @@ namespace ItemNumberManager
         {
             foreach (var item in pdfNames)
             {
-                PDFs.Add(new PDFModel(item));
+                try
+                {
+                    PDFs.Add(new PDFModel(item));
+                }
+                catch (ApplicationException)
+                {
+
+                }
             }
         }
 

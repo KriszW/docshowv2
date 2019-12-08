@@ -29,9 +29,7 @@ namespace TCPClient
         {
             var client = ClientStarter.Clients[model.MonitorIndex];
 
-            client.Monitor.AddNewModel(model);
-
-            client.Monitor.Position();
+            client.Monitor.Position(model);
         }
 
         public byte[] MachineModelSet(MachineSetModel model)

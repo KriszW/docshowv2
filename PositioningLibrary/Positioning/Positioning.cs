@@ -1,6 +1,7 @@
 ﻿using KilokoModelLibrary;
 using SendedModels;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -10,47 +11,70 @@ namespace PositioningLib
 {
     public class Positioning
     {
-        public static void PositionModel(PositionModel model, Screen screen)
+        public Positioning(PositionModel model, Screen screen)
+        {
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            Screen = screen ?? throw new ArgumentNullException(nameof(screen));
+            Adobes = new List<Process>();
+        }
+
+        public PositionModel Model { get; set; }
+        public Screen Screen { get; set; }
+
+        public List<Process> Adobes { get; set; }
+
+        public void CloseAllAdobe() 
+        {
+            foreach (var item in Adobes)
+            {
+                try
+                {
+                    item.Kill();
+                }
+                catch (Exception) { }
+            }
+
+            Adobes.Clear();
+        }
+
+        public void PositionModel()
         {
             int index = 1;
 
-            var rect = screen.Bounds;
-
-            foreach (var item in model.PDF)
+            foreach (var item in Model.PDF)
             {
-                if (model.Postion == KilokoPosition.None)
+                if (Model.Postion == KilokoPosition.None)
                 {
                     var pos = (KilokoPosition)index;
 
-                    SplitForOneSide(item, rect, pos);
+                    SplitForOneSide(item, pos);
 
                     index++;
                 }
                 else
                 {
-                    SplitForOneSide(item, rect, model.Postion);
+                    SplitForOneSide(item, Model.Postion);
                 }
             }
         }
 
-        #region display manager
-
-        private static bool SplitForOneSide(PDFModel model, Rectangle screen, KilokoPosition pos)
+        private bool SplitForOneSide(PDFModel Model, KilokoPosition pos)
         {
             //ha a standard empty vagy nyitva van akkor nem kell csinálnia semmit
-            if (model.PDFFileName.EndsWith(".pdf") == false)
+            if (Model.PDFFileName.EndsWith(".pdf") == false)
             {
-                model.PDFFileName += ".pdf";
+                Model.PDFFileName += ".pdf";
             }
 
             //az adobehez az argumentumok beállítása
-            string args = ProcessOperations.SetArguments(model.PDFFileName);
+            string args = ProcessOperations.SetArguments(Model.PDFFileName);
 
             //az adobe program elindítása a megadott argumentumokkal
             Process adobeProc = ProcessOperations.StartAdobe(args);
+            Adobes.Add(adobeProc);
 
             //a megfelelő helyre állítása a megadott monitoron a megadott helyre
-            SetForGoodPosition(screen, pos);
+            SetForGoodPosition(pos);
 
             //a readermódba állító program elindítása
             ProcessOperations.StartReader();
@@ -58,7 +82,7 @@ namespace PositioningLib
             return true;
         }
 
-        private static IntPtr GetMainWindowHandle(Process process)
+        private IntPtr GetMainWindowHandle(Process process)
         {
             IntPtr output = IntPtr.Zero;
 
@@ -90,8 +114,10 @@ namespace PositioningLib
             return output;
         }
 
-        private static void SetForGoodPosition(Rectangle screen, KilokoPosition pos)
+        private void SetForGoodPosition(KilokoPosition pos)
         {
+            var screen = Screen.Bounds;
+
             //az előtérben lévő program pointerének megszerzése
             IntPtr hwWindowHandle = NativeMethods.GetForegroundWindow();
             //IntPtr hwWindowHandle = GetMainWindowHandle(adobe);
@@ -116,7 +142,5 @@ namespace PositioningLib
             //előtérbe állítása ha valami beugrott volna közben
             NativeMethods.SetForegroundWindow(hwWindowHandle);
         }
-
-        #endregion display manager
     }
 }
