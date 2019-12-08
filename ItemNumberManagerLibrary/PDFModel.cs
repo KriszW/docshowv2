@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerSettings;
+using System;
 
 namespace ItemNumberManager
 {
@@ -7,7 +8,7 @@ namespace ItemNumberManager
         public PDFModel(string name)
         {
             FileName = name ?? throw new ArgumentNullException(nameof(name));
-            FilePath = $@"K:\programs\DocShow\Resources\{name}.pdf";
+            FilePath = System.IO.Path.Combine(Settings.CurrentSettings.Resources,$"{name}.pdf");
 
             if (System.IO.File.Exists(FilePath))
             {

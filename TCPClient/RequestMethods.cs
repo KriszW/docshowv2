@@ -12,12 +12,12 @@ namespace TCPClient
 
         public Request Request { get; private set; }
 
-        private static object _printLock = new object();
+        private static object _posLock = new object();
 
         public byte[] DocsSend(PositionModel model)
         {
             System.Threading.Thread.Sleep(model.MonitorIndex * 5000);
-            lock (_printLock)
+            lock (_posLock)
             {
                 Position(model);
             }

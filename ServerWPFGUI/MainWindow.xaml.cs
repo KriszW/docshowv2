@@ -4,12 +4,14 @@ using LuxScanOrdReader;
 using LuxScanRawItems;
 using Machines;
 using SendOutModels;
+using ServerSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -44,13 +46,28 @@ namespace ServerWPFGUI
         {
             InitializeComponent();
 
+            Settings.CurrentSettings = LoadSettings("Settings\\settings.json");
+
             OrdReader = new FileReader();
 
             OrdReader.CopySucceeded += OrdReader_CopySucceeded;
 
-            ReaderTimer = CreateTimer(15000);
-
             _dgModels = new List<MachinesToGUIModel>();
+        }
+
+        public Settings LoadSettings(string path)
+        {
+            try
+            {
+                return Settings.LoadSettings(path);
+            }
+            catch (ApplicationException ex)
+            {
+                MessageBox.Show(ex.Message,"Settings betöltése",MessageBoxButton.OK,MessageBoxImage.Error);
+                Close();
+            }
+
+            return default;
         }
 
         private Timer CreateTimer(double interval)
@@ -242,9 +259,9 @@ namespace ServerWPFGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             KilokoModel.Kilokok = new List<KilokoModel>();
-            ItemNumberConverter.Lines = System.IO.File.ReadAllLines(@"pdfek.csv").ToList();
+            ItemNumberConverter.Lines = System.IO.File.ReadAllLines(Settings.CurrentSettings.ItemNumberFile).ToList();
 
-            var machineLoader = new MachineLoader(@"gépek.csv");
+            var machineLoader = new MachineLoader(Settings.CurrentSettings.Machines);
             Machine.Machines = machineLoader.Load();
 
             foreach (var item in Machine.Machines)
@@ -255,7 +272,7 @@ namespace ServerWPFGUI
 
             UpdateDataSource();
 
-            var codeTableConv = new CodeTableConverter(@"CodeTable.csv");
+            var codeTableConv = new CodeTableConverter(Settings.CurrentSettings.CodeTableFile);
             codeTableConv.Convert();
 
             DocsShowServer.DocsShow = new DocsShowServer();
@@ -263,6 +280,8 @@ namespace ServerWPFGUI
 
             DocsShowServer.DocsShow.Server.ClientConnected += Server_ClientConnected;
             DocsShowServer.DocsShow.Server.ClientDisconnected += Server_ClientDisconnected;
+
+            ReaderTimer = CreateTimer(Settings.CurrentSettings.Interval * 1000);
 
             InstantUpdate();
         }

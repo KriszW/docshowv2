@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageSelectorLibrary", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientService", "ClientService\ClientService.csproj", "{4C32CEAB-6B2B-46F9-8269-CE1AF62AECF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSettingsLibrary", "ServerSettings\ServerSettingsLibrary.csproj", "{88C4239F-0D94-408C-9259-3B53633A911E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,10 @@ Global
 		{4C32CEAB-6B2B-46F9-8269-CE1AF62AECF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C32CEAB-6B2B-46F9-8269-CE1AF62AECF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C32CEAB-6B2B-46F9-8269-CE1AF62AECF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88C4239F-0D94-408C-9259-3B53633A911E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C4239F-0D94-408C-9259-3B53633A911E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C4239F-0D94-408C-9259-3B53633A911E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C4239F-0D94-408C-9259-3B53633A911E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +152,7 @@ Global
 		{78ABC471-CC4D-4188-AF39-CF3E15C8BA7A} = {206D5149-72A2-4DD0-9F54-A21BDBF16A45}
 		{648E751B-D8EC-4F3D-8B51-EFC013E821E3} = {206D5149-72A2-4DD0-9F54-A21BDBF16A45}
 		{4C32CEAB-6B2B-46F9-8269-CE1AF62AECF6} = {35016454-80D9-47D4-B949-8654703277E9}
+		{88C4239F-0D94-408C-9259-3B53633A911E} = {206D5149-72A2-4DD0-9F54-A21BDBF16A45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9849052-8354-4A1E-9734-F1AF01D6A68D}

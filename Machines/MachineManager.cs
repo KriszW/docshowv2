@@ -16,12 +16,12 @@ namespace Machines
 
         public static void Shutdown()
         {
-            throw new NotImplementedException();
+            Process.Start(ShutdownPath);
         }
 
         public static void Restart()
         {
-            throw new NotImplementedException();
+            Process.Start(RestartPath);
         }
     }
 }

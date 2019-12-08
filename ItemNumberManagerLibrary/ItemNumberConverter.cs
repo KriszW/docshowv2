@@ -13,6 +13,11 @@ namespace ItemNumberManager
             //az egész cikken végig kell menni karakterenként
             for (int i = 0; i < mask.Length; i++)
             {
+                if (i >= itemNum.Length)
+                {
+                    return false;
+                }
+
                 var maskChar = mask[i];
                 var matnumChar = itemNum[i];
 

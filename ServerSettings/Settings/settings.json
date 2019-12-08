@@ -1,0 +1,8 @@
+﻿{
+  "ItemNumberFile": "K:\\programs\\DocShow\\Common\\pdfek.csv",
+  "CodeTableFile": "CodeTable.csv",
+  "Resources": "K:\\programs\\DocShow\\Resources",
+  "Machines": "gépek.csv",
+  "ConnString": "",
+  "Interval": 15
+}
