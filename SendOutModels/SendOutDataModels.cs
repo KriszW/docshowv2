@@ -10,9 +10,27 @@ namespace SendOutModels
 {
     public class SendOutDataModels
     {
+        public SendOutDataModels(List<KilokoModel> models, List<Machine> machines)
+        {
+            Models = models;
+            Machines = machines;
+        }
+
         public List<KilokoModel> Models { get; set; }
 
         public List<Machine> Machines { get; set; }
+
+        public IEnumerable<SendOutModel> GetModelsFromKilokok(List<KilokoModel> kilokok)
+        {
+            var output = new List<SendOutModel>();
+
+            foreach (var item in kilokok)
+            {
+                output.Add(GetModel(item));
+            }
+
+            return output;
+        }
 
         private IEnumerable<SendOutModel> GetModels()
         {
@@ -20,17 +38,24 @@ namespace SendOutModels
 
             foreach (var item in Models)
             {
-                var machine = GetMachine(item.Kiloko);
-
-                if (machine != default)
-                {
-                    var model = GetModelFromMachine(new SendOutKilokoModel(machine,item));
-
-                    output.Add(new SendOutModel(machine,model));
-                }
+                output.Add(GetModel(item));
             }
 
             return output;
+        }
+
+        private SendOutModel GetModel(KilokoModel item)
+        {
+            var machine = GetMachine(item.Kiloko);
+
+            if (machine != default)
+            {
+                var model = GetModelFromMachine(new SendOutKilokoModel(machine, item));
+
+                return new SendOutModel(machine, model);
+            }
+
+            return default;
         }
 
         private PositionModel GetModelFromMachine(SendOutKilokoModel soModel)
@@ -50,7 +75,7 @@ namespace SendOutModels
             return model;
         }
 
-        private void SendDatasOutToClient(SendOutModel model)
+        public void SendDatasOutToClient(SendOutModel model)
         {
             var machine = model.Machine;
             var data = Serializer.Serialize((object)model.Data);

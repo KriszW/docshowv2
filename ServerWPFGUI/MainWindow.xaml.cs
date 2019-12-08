@@ -33,6 +33,8 @@ namespace ServerWPFGUI
         public Timer ReaderTimer { get; set; }
 
         private List<MachinesToGUIModel> _dgModels { get; set; }
+        public SendOutDataModels ActiveOrder { get; set; }
+        public List<KilokoModel> ActiveKilokok { get; set; }
         
         public IReadOnlyCollection<MachinesToGUIModel> GUIModelrs { get => _dgModels.AsReadOnly(); }
 
@@ -89,17 +91,13 @@ namespace ServerWPFGUI
             var datas = converter.Convert(file.FullName);
 
             var grouper = new KilokoGrouper(datas);
-            var reals = grouper.GroupKilokok();
+            ActiveKilokok = grouper.GroupKilokok();
 
-            var models = new SendOutDataModels()
-            {
-                Machines = Machine.Machines,
-                Models = reals
-            };
+            ActiveOrder = new SendOutDataModels(ActiveKilokok, Machine.Machines);
 
-            models.Send();
+            ActiveOrder.Send();
 
-            UpdateGUI(reals);
+            UpdateGUI(ActiveKilokok);
             OrdReader.OrderFile = file;
 
             UpdateORDFileInfos();
@@ -170,33 +168,73 @@ namespace ServerWPFGUI
             });
         }
 
-        private void SetClientState(System.Net.Sockets.Socket e, bool state)
+        private void SetClientState(string ip, bool state)
         {
-            var ip = e.RemoteEndPoint.ToString().Split(':')[0];
+            var kilokok = GetKilokok(ip);
+
+            foreach (var item in kilokok)
+            {
+                item.Active = state;
+            }
+
+            UpdateDataSource();
+        }
+
+        private List<MachinesToGUIModel> GetKilokok(string ip)
+        {
+            var output = new List<MachinesToGUIModel>();
 
             foreach (var item in _dgModels)
             {
                 if (item.GetIP() == ip)
                 {
-                    item.Active = state;
+                    output.Add(item);
                 }
             }
 
-            UpdateDataSource();
+            return output;
         }
 
         private void Server_ClientDisconnected(object sender, System.Net.Sockets.Socket e)
         {
             DocsShowServer.DocsShow.RemoveClient(e);
 
-            SetClientState(e, false);
+            var ip = e.RemoteEndPoint.ToString().Split(':')[0];
+
+            SetClientState(ip, false);
         }
+
+        private void SendFirst(string ip)
+        {
+            var kilokok = GetKilokok(ip);
+
+            var reals = GetKilokok(kilokok);
+
+            var datas = ActiveOrder.GetModelsFromKilokok(reals);
+
+            foreach (var item in datas)
+            {
+                ActiveOrder.SendDatasOutToClient(item);
+            }
+        }
+
+        private List<KilokoModel> GetKilokok(List<MachinesToGUIModel> kilokok) => (from kiloko in kilokok
+                                                                                   from activeKiloko in ActiveKilokok
+                                                                                   where kiloko.Kiloko == activeKiloko.Kiloko
+                                                                                   select activeKiloko).ToList();
 
         private void Server_ClientConnected(object sender, System.Net.Sockets.Socket e)
         {
             DocsShowServer.DocsShow.CreateNewClient(e);
 
-            SetClientState(e, true);
+            var ip = e.RemoteEndPoint.ToString().Split(':')[0];
+
+            SetClientState(ip, true);
+
+            if (ActiveOrder != default)
+            {
+                SendFirst(ip); 
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
