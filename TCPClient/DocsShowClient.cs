@@ -33,6 +33,11 @@ namespace TCPClient
             Monitor = new MonitorInfo(monitorIndex);
         }
 
+        public void Disconnect()
+        {
+            Client.Disconnect(false);
+        }
+
         public bool Connect()
         {
             Client.Connect(ServerIP, ServerPort, new TimeSpan(0, 0, 30), ushort.MaxValue);
@@ -43,11 +48,17 @@ namespace TCPClient
                 MyIP = Client.Socket.LocalEndPoint.ToString().Split(':')[0];
 
                 Client.DataReceived += Client_DataReceived;
+                Client.OnError += Client_OnError;
 
                 SetupMachineData();
             }
 
             return Client.IsConnected;
+        }
+
+        private void Client_OnError(object sender, Exception e)
+        {
+            //logger implementálása
         }
 
         private Request CreateRequest()

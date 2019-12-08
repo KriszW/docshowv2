@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="IRequestMethods.cs" />
     <Compile Include="MachineSetModel.cs" />
-    <Compile Include="PDFModel.cs" />
+    <Compile Include="PDFModelOverTCP.cs" />
     <Compile Include="PositionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
@@ -56,6 +56,10 @@
     <Compile Include="Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ItemNumberManagerLibrary\ItemNumberManagerLibrary.csproj">
+      <Project>{FEBF8A85-6F31-442F-8FFC-AE5A87ED907E}</Project>
+      <Name>ItemNumberManagerLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KilokoModelLibrary\KilokoModelLibrary.csproj">
       <Project>{bf5622a0-9c16-4839-8c52-109392f6893d}</Project>
       <Name>KilokoModelLibrary</Name>

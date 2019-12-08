@@ -1,4 +1,5 @@
-﻿using KilokoModelLibrary;
+﻿using ItemNumberManager;
+using KilokoModelLibrary;
 using LuxScanOrdModel;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,45 +10,51 @@ namespace LuxScanRawItems
     {
         public List<LuxScanItem> RawDatas { get; set; }
 
-        private List<KilokoModel> Models { get; set; }
-
         public KilokoGrouper(List<LuxScanItem> rawDatas)
         {
             RawDatas = rawDatas;
-            Models = new List<KilokoModel>();
         }
 
-        private KilokoModel GetModel(string number)
+        public MonitorPosition GetPosition(string raw)
         {
-            var model = Models.FirstOrDefault(m=> m.Kiloko.ToString() == number);
-
-            if (model == default)
+            if (raw.ToUpper().EndsWith("B"))
             {
-                model = new KilokoModel(number);
-
-                Models.Add(model);
+                return MonitorPosition.Left;
             }
-
-            return model;
+            else if (raw.ToUpper().EndsWith("J"))
+            {
+                return MonitorPosition.Right;
+            }
+            else
+            {
+                return MonitorPosition.None;
+            }
         }
 
         public List<KilokoModel> GroupKilokok()
         {
+            var output = new List<KilokoModel>();
+
             foreach (var item in RawDatas)
             {
                 foreach (var kilokoItem in item.Models)
                 {
-                    var kilokoNum = kilokoItem.GetKilokoNumFromRaw(); 
-                    var model = GetModel(kilokoNum);
+                    var model = output.FirstOrDefault(m=> m.Kiloko == kilokoItem.Kiloko);
+
+                    if (model == default)
+                    {
+                        model = new KilokoModel(kilokoItem.Kiloko.ToString());
+                        output.Add(model);
+                    }
 
                     foreach (var material in item.Items)
                     {
-                        model.AddNewCikk(material);
+                        model.AddNewCikk(material,GetPosition(kilokoItem.RawKiloko));
                     }
                 }
             }
 
-            return Models;
+            return output;
         }
     }
 }

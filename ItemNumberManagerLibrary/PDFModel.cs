@@ -17,8 +17,10 @@ namespace ItemNumberManager
             {
                 throw new ApplicationException(FilePath+ " fájl nem található");
             }
+            Position = MonitorPosition.None;
         }
 
+        public MonitorPosition Position { get; set; }
         public string FileName { get; private set; }
         public string FilePath { get; private set; }
         public byte[] Datas { get; private set; }

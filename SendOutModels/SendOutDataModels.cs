@@ -35,13 +35,13 @@ namespace SendOutModels
 
         private PositionModel GetModelFromMachine(SendOutKilokoModel soModel)
         {
-            var model = new PositionModel(soModel.Kiloko.Position, soModel.Machine.MonitorIndex);
+            var model = new PositionModel(soModel.Machine.MonitorIndex);
 
             foreach (var material in soModel.Kiloko.Items)
             {
                 foreach (var pdf in material.PDFs)
                 {
-                    var pdfModel = new PDFModel(pdf.FileName);
+                    var pdfModel = new PDFModelOverTCP(pdf.FileName, pdf.Position);
                     pdfModel.MonitorIndex = soModel.Machine.MonitorIndex;
                     model.PDF.Add(pdfModel);
                 }

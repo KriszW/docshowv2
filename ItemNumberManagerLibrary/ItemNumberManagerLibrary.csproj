@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ItemNumber.cs" />
     <Compile Include="ItemNumberConverter.cs" />
+    <Compile Include="MonitorPos.cs" />
     <Compile Include="PDFekModel.cs" />
     <Compile Include="PDFModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

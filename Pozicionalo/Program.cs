@@ -4,6 +4,9 @@
     {
         private static void Main(string[] args)
         {
+            //az összes adobe process bezárása
+            PositioningLib.Positioning.CloseAllAdobeProcess();
+
             //a shortcut managing elintézése
             InItClientProgram.ShortcutOperations.SetStartUp();
 

@@ -24,6 +24,16 @@ namespace ClientGUI
         private void Button1_Click(object sender, EventArgs e)
         {
             ClientStarter.StartClients(Datas.CountOfMonitors);
+
+            foreach (var item in ClientStarter.Clients)
+            {
+                item.Client.OnDisconnect += Client_OnDisconnect;
+            }
+        }
+
+        private void Client_OnDisconnect(object sender, EasyTcp.Client.EasyTcpClient e)
+        {
+            
         }
     }
 }

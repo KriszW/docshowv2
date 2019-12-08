@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ItemNumberManagerLibrary\ItemNumberManagerLibrary.csproj">
+      <Project>{febf8a85-6f31-442f-8ffc-ae5a87ed907e}</Project>
+      <Name>ItemNumberManagerLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KilokoModelLibrary\KilokoModelLibrary.csproj">
       <Project>{BF5622A0-9C16-4839-8C52-109392F6893D}</Project>
       <Name>KilokoModelLibrary</Name>

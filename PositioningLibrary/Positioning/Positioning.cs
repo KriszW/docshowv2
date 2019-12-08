@@ -1,5 +1,5 @@
-﻿using KilokoModelLibrary;
-using SendedModels;
+﻿using SendedModels;
+using ItemNumberManager;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,6 +23,18 @@ namespace PositioningLib
 
         public List<Process> Adobes { get; set; }
 
+        public static void CloseAllAdobeProcess()
+        {
+            foreach (var item in Process.GetProcessesByName("AcroRd32"))
+            {
+                try
+                {
+                    item.Kill();
+                }
+                catch (Exception) { }
+            }
+        }
+
         public void CloseAllAdobe() 
         {
             foreach (var item in Adobes)
@@ -43,9 +55,9 @@ namespace PositioningLib
 
             foreach (var item in Model.PDF)
             {
-                if (Model.Postion == KilokoPosition.None)
+                if (item.Position == MonitorPosition.None)
                 {
-                    var pos = (KilokoPosition)index;
+                    var pos = (MonitorPosition)index;
 
                     SplitForOneSide(item, pos);
 
@@ -53,12 +65,12 @@ namespace PositioningLib
                 }
                 else
                 {
-                    SplitForOneSide(item, Model.Postion);
+                    SplitForOneSide(item, item.Position);
                 }
             }
         }
 
-        private bool SplitForOneSide(PDFModel Model, KilokoPosition pos)
+        private bool SplitForOneSide(PDFModelOverTCP Model, MonitorPosition pos)
         {
             //ha a standard empty vagy nyitva van akkor nem kell csinálnia semmit
             if (Model.PDFFileName.EndsWith(".pdf") == false)
@@ -114,7 +126,7 @@ namespace PositioningLib
             return output;
         }
 
-        private void SetForGoodPosition(KilokoPosition pos)
+        private void SetForGoodPosition(MonitorPosition pos)
         {
             var screen = Screen.Bounds;
 
@@ -126,11 +138,11 @@ namespace PositioningLib
 
             switch (pos)
             {
-                case KilokoPosition.Left:
+                case MonitorPosition.Left:
                     NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X, screen.Y, halfWidth, screen.Height, SWD.SHOWWINDOW);
                     break;
 
-                case KilokoPosition.Right:
+                case MonitorPosition.Right:
                     NativeMethods.SetWindowPos(hwWindowHandle, HW.Top, screen.X + halfWidth, screen.Y, halfWidth, screen.Height, SWD.SHOWWINDOW);
                     break;
 

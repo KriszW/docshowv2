@@ -17,13 +17,17 @@ namespace Machines
 
             Itemnumber = item.Material;
 
-            if (item.PDFs.Count == 1)
+            var left = item.PDFs.FirstOrDefault(p => p.Position == ItemNumberManager.MonitorPosition.Left);
+            var right = item.PDFs.FirstOrDefault(p => p.Position == ItemNumberManager.MonitorPosition.Right);
+
+            if (left != default)
             {
-                DocLeft = item?.PDFs[0]?.FileName;
+                DocLeft = left.FileName;
             }
-            else if (item.PDFs.Count == 2)
+
+            if (right != default)
             {
-                DocRight = item?.PDFs[1]?.FileName;
+                DocRight = right.FileName; 
             }
         }
 
