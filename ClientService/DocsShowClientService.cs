@@ -1,4 +1,5 @@
 ﻿using PositioningLib;
+using Settings.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using TCPClient;
 
 namespace ClientService
@@ -18,17 +20,18 @@ namespace ClientService
         {
             InitializeComponent();
 
-            //az összes adobe process bezárása
-            Positioning.CloseAllAdobeProcess();
+            var path = "clientSettings.json";
 
-            //a shortcut managing elintézése
-            InItClientProgram.ShortcutOperations.SetStartUp();
+            if (System.IO.File.Exists(path))
+            {
+                var settings = new JavaScriptSerializer().Deserialize<ClientSettings>(System.IO.File.ReadAllText(path));
 
-            //ha kell akkor az ablak elrejtése
-            InItClientProgram.InitMainProgram.Hide();
+                //az összes adobe process bezárása
+                Positioning.CloseAllAdobeProcess();
 
-            //a szükséges paraméterek betöltése
-            InItClientProgram.InitMainProgram.SetUpParams();
+                //a szükséges paraméterek betöltése
+                InItClientProgram.InitMainProgram.SetUpParams(settings);
+            }
         }
 
         protected override void OnStart(string[] args)

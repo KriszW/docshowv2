@@ -60,6 +60,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -97,6 +98,10 @@
     <ProjectReference Include="..\PositioningLibrary\PositioningLibrary.csproj">
       <Project>{918C1BCB-26F8-4549-9243-439037FC4D2B}</Project>
       <Name>PositioningLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerSettings\SettingsLibrary.csproj">
+      <Project>{88C4239F-0D94-408C-9259-3B53633A911E}</Project>
+      <Name>SettingsLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\TCPClient\TCPClientLibrary.csproj">
       <Project>{95f257f0-c336-4e40-a8f2-82c121faa4b2}</Project>

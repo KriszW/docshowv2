@@ -33,7 +33,7 @@ namespace ClientGUI
 
         private void Client_OnDisconnect(object sender, EasyTcp.Client.EasyTcpClient e)
         {
-            
+            ClientStarter.StartClients(Datas.CountOfMonitors);
         }
     }
 }

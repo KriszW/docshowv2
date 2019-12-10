@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PositioningLib
 {
-    internal class ProcessOperations
+    public class ProcessOperations
     {
         #region ReaderManager start
 
@@ -59,14 +59,26 @@ namespace PositioningLib
 
         #region adobe things
 
+        public static event EventHandler<PDFNotFoundException> OnPDFNotFound;
+
         //az adobéhez a az indítása argumentumok megadása
         public static string SetArguments(string fileName)
         {
             var filePath = Datas.PDFsPath + fileName;
 
-            var arg = $"/n /A \"page=1&zoom={Datas.ZoomScale}&scrollbar=0&view=FitH\" \"{filePath}\"";
+            if (System.IO.File.Exists(filePath) == false)
+            {
+                var ex = new PDFNotFoundException($"A {filePath} PDF nem található", fileName);
 
-            return arg;
+                OnPDFNotFound?.Invoke(default,ex);
+
+                if (System.IO.File.Exists(filePath) == false)
+                {
+                    throw ex;
+                }
+            }
+
+            return $"/n /A \"page=1&zoom={Datas.ZoomScale}&scrollbar=0&view=FitH\" \"{filePath}\"";
         }
 
         //az adobe program elindítása

@@ -31,7 +31,9 @@ namespace Machines
         public string IP { get; private set; }
         public int MonitorIndex { get; private set; }
         public int KilokoNum { get; private set; }
-        public List<IKilokoModel> Kiloko { get; set; } 
+        public List<IKilokoModel> Kiloko { get; set; }
+
+        public override bool Equals(object obj) => ((Machine)obj).IP == this.IP;
 
         public bool IsSame(Machine other)
         {

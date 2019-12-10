@@ -4,5 +4,6 @@
   "Resources": "K:\\programs\\DocShow\\Resources",
   "Machines": "gépek.csv",
   "ConnString": "",
+  "PsExecLocation": "PsExec.exe",
   "Interval": 15
 }

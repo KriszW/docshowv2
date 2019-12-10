@@ -1,0 +1,8 @@
+﻿{
+  "PDFReaderLoc": "C:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroRd32.exe",
+  "WaitingTime": 5,
+  "PDFResourcesPath": "Resources",
+  "ZoomScale": 75,
+  "ServerIP": "192.168.1.12",
+  "ServerPort": 43213
+}

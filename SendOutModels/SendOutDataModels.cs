@@ -80,7 +80,7 @@ namespace SendOutModels
             var machine = model.Machine;
             var data = Serializer.Serialize((object)model.Data);
 
-            var client = (from tcpClient in DocsShowServer.DocsShow.Clients where tcpClient.Machine.IsSame(machine) select tcpClient).SingleOrDefault();
+            var client = (from tcpClient in DocsShowServer.DocsShow.Clients where tcpClient.Machine.IsSame(machine) select tcpClient).FirstOrDefault();
 
             if (client != default)
             {

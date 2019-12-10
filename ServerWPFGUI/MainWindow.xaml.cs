@@ -4,7 +4,7 @@ using LuxScanOrdReader;
 using LuxScanRawItems;
 using Machines;
 using SendOutModels;
-using ServerSettings;
+using Settings.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +46,7 @@ namespace ServerWPFGUI
         {
             InitializeComponent();
 
-            Settings.CurrentSettings = LoadSettings("Settings\\settings.json");
+            ServerSettings.CurrentSettings = LoadSettings("Settings\\settings.json");
 
             OrdReader = new FileReader();
 
@@ -55,11 +55,11 @@ namespace ServerWPFGUI
             _dgModels = new List<MachinesToGUIModel>();
         }
 
-        public Settings LoadSettings(string path)
+        public ServerSettings LoadSettings(string path)
         {
             try
             {
-                return Settings.LoadSettings(path);
+                return ServerSettings.LoadSettings(path);
             }
             catch (ApplicationException ex)
             {
@@ -259,9 +259,9 @@ namespace ServerWPFGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             KilokoModel.Kilokok = new List<KilokoModel>();
-            ItemNumberConverter.Lines = System.IO.File.ReadAllLines(Settings.CurrentSettings.ItemNumberFile).ToList();
+            ItemNumberConverter.Lines = System.IO.File.ReadAllLines(ServerSettings.CurrentSettings.ItemNumberFile).ToList();
 
-            var machineLoader = new MachineLoader(Settings.CurrentSettings.Machines);
+            var machineLoader = new MachineLoader(ServerSettings.CurrentSettings.Machines);
             Machine.Machines = machineLoader.Load();
 
             foreach (var item in Machine.Machines)
@@ -272,7 +272,7 @@ namespace ServerWPFGUI
 
             UpdateDataSource();
 
-            var codeTableConv = new CodeTableConverter(Settings.CurrentSettings.CodeTableFile);
+            var codeTableConv = new CodeTableConverter(ServerSettings.CurrentSettings.CodeTableFile);
             codeTableConv.Convert();
 
             DocsShowServer.DocsShow = new DocsShowServer();
@@ -281,31 +281,31 @@ namespace ServerWPFGUI
             DocsShowServer.DocsShow.Server.ClientConnected += Server_ClientConnected;
             DocsShowServer.DocsShow.Server.ClientDisconnected += Server_ClientDisconnected;
 
-            ReaderTimer = CreateTimer(Settings.CurrentSettings.Interval * 1000);
+            ReaderTimer = CreateTimer(ServerSettings.CurrentSettings.Interval * 1000);
 
             InstantUpdate();
         }
 
         private async void Button_RestartTables_Click(object sender, RoutedEventArgs e)
         {
-            await ManipulateMachines(sender as Button, new Action(MachineManager.Restart));
+            await ManipulateMachines(sender as Button, new Action<string>(MachineManager.Restart),TextBox_TableID.Text);
         }
 
         private async void Button_StopTables_Click(object sender, RoutedEventArgs e)
         {
-            await ManipulateMachines(sender as Button, new Action(MachineManager.Shutdown));
+            await ManipulateMachines(sender as Button, new Action<string>(MachineManager.Shutdown), TextBox_TableID.Text);
         }
 
         private async void Button_StartTables_Click(object sender, RoutedEventArgs e)
         {
-            await ManipulateMachines(sender as Button, new Action(MachineManager.Start));
+            await ManipulateMachines(sender as Button, new Action<string>(MachineManager.Start), TextBox_TableID.Text);
         }
 
-        async Task ManipulateMachines(Button btn, Action manipulator)
+        async Task ManipulateMachines(Button btn, Action<string> manipulator, string param)
         {
             btn.IsEnabled = false;
 
-            await Task.Run(() => manipulator.Invoke());
+            await Task.Run(() => manipulator.Invoke(param));
 
             btn.IsEnabled = true;
         }
@@ -324,6 +324,50 @@ namespace ServerWPFGUI
             if (OrdReader.OrderFile != default)
             {
                 MakeUpdate(OrdReader.OrderFile);
+            }
+        }
+
+        private void TextBox_TableID_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var defRestart = "asztal újraindítása";
+            var defStop = "asztal indítása";
+            var defStart = "asztal leállítása";
+
+            if (TextBox_TableID.Text == "")
+            {
+                Button_RestartTables.Content = "Összes ";
+                Button_StartTables.Content = "Összes ";
+                Button_StopTables.Content = "Összes ";
+            }
+            else
+            {
+                Button_RestartTables.Content = TextBox_TableID.Text + ". ";
+                Button_StopTables.Content = TextBox_TableID.Text + ". ";
+                Button_StartTables.Content = TextBox_TableID.Text + ". ";
+            }
+
+            Button_RestartTables.Content += defRestart;
+            Button_StopTables.Content += defStop;
+            Button_StartTables.Content += defStart;
+        }
+
+        private void TextBox_TableID_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+
+            }
+            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+            {
+
+            }
+            else if (e.Key == Key.Back || e.Key == Key.Enter)
+            {
+
+            }
+            else
+            {
+                e.Handled = true;
             }
         }
     }

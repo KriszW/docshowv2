@@ -1,4 +1,5 @@
 ﻿using PositioningLib;
+using Settings.Client;
 using System;
 using System.Configuration;
 using System.Windows.Forms;
@@ -26,6 +27,21 @@ namespace InItClientProgram
             {
                 NativeMethods.ShowWindow(Consolehandle, 5);
             }
+        }
+
+        public static void SetUpParams(ClientSettings settings)
+        {
+            //az alap adatok betöltése
+            Datas.PathToPDFReader = settings.PDFReaderLoc;
+            Datas.PDFsPath = settings.PDFResourcesPath;
+            Datas.ZoomScale = settings.ZoomScale.ToString();
+            Datas.WaitingTime = settings.WaitingTime;
+            Datas.CountOfMonitors = Screen.AllScreens.Length;
+            Datas.ServerIP = settings.ServerIP;
+            Datas.Port = (ushort)settings.ServerPort;
+
+            //a monitorinfos inicializálása
+            Datas.MonitorInfos = new MonitorInfo[Datas.CountOfMonitors];
         }
 
         public static void SetUpParams()

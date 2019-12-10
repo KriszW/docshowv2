@@ -105,12 +105,12 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="Asztalszáma:"/>
-                    <TextBox x:Name="TextBox_TableID" Grid.Column="1"/>
+                    <TextBox x:Name="TextBox_TableID" Grid.Column="1" KeyDown="TextBox_TableID_KeyDown" TextChanged="TextBox_TableID_TextChanged"/>
                 </Grid>
 
-                <Button x:Name="Button_RestartTables" Grid.Row="2" Content="Asztalok újraindítása" Click="Button_RestartTables_Click"/>
-                <Button x:Name="Button_StopTables" Grid.Row="4" Content="Asztalok leállítása" Click="Button_StopTables_Click"/>
-                <Button x:Name="Button_StartTables" Grid.Row="6" Content="Asztalok indítása" Click="Button_StartTables_Click"/>
+                <Button x:Name="Button_RestartTables" Grid.Row="2" Content="Összes asztal újraindítása" Click="Button_RestartTables_Click"/>
+                <Button x:Name="Button_StopTables" Grid.Row="4" Content="Összes asztal leállítása" Click="Button_StopTables_Click"/>
+                <Button x:Name="Button_StartTables" Grid.Row="6" Content="Összes asztal indítása" Click="Button_StartTables_Click"/>
             </Grid>
         </Grid>
     </Grid>

@@ -79,19 +79,32 @@ namespace PositioningLib
             }
 
             //az adobehez az argumentumok beállítása
-            string args = ProcessOperations.SetArguments(Model.PDFFileName);
+            try
+            {
+                string args = ProcessOperations.SetArguments(Model.PDFFileName);
 
-            //az adobe program elindítása a megadott argumentumokkal
-            Process adobeProc = ProcessOperations.StartAdobe(args);
-            Adobes.Add(adobeProc);
+                //az adobe program elindítása a megadott argumentumokkal
+                Process adobeProc = ProcessOperations.StartAdobe(args);
+                Adobes.Add(adobeProc);
 
-            //a megfelelő helyre állítása a megadott monitoron a megadott helyre
-            SetForGoodPosition(pos);
+                //a megfelelő helyre állítása a megadott monitoron a megadott helyre
+                SetForGoodPosition(pos);
 
-            //a readermódba állító program elindítása
-            ProcessOperations.StartReader();
+                //a readermódba állító program elindítása
+                ProcessOperations.StartReader();
 
-            return true;
+                return true;
+            }
+            catch (PDFNotFoundException)
+            {
+
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return false;
         }
 
         private IntPtr GetMainWindowHandle(Process process)

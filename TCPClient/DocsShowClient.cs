@@ -2,7 +2,11 @@
 using PositioningLib;
 using SendedModels;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Linq;
 using TCPServer;
 
 namespace TCPClient
@@ -20,6 +24,7 @@ namespace TCPClient
         public string MyIP { get; set; }
 
         public MonitorInfo Monitor { get; set; }
+        public Request CurrentRequest { get; private set; }
 
         public DocsShowClient(string ip, ushort port, int monitorIndex)
         {
@@ -31,6 +36,7 @@ namespace TCPClient
             MonitorIndex = monitorIndex;
 
             Monitor = new MonitorInfo(monitorIndex);
+            ProcessOperations.OnPDFNotFound += ManageNotFoundPDF;
         }
 
         public void Disconnect()
@@ -84,16 +90,81 @@ namespace TCPClient
         {
             Task.Run(() =>
             {
-                var request = (Request)Serializer.Deserialize(e.Data);
-                var requestManager = new RequestManager(request, new RequestMethods(request));
+                CurrentRequest = (Request)Serializer.Deserialize(e.Data);
+                var requestManager = new RequestManager(CurrentRequest, new RequestMethods(CurrentRequest));
 
-                var reply = requestManager.ManageRequest();
+                var reply = default(byte[]);
+
+                try
+                {
+                     reply = requestManager.ManageRequest();
+                }
+                catch (Exception ex)
+                {
+
+                }
 
                 if (reply != default && reply.Length > 0)
                 {
                     Client.Send(reply);
                 }
+
+                CurrentRequest = default;
             });
+        }
+
+        private object _getpdfLock = new object();
+
+        public void ManageNotFoundPDF(object sender, PDFNotFoundException e)
+        {
+            GetPDF(e.FileName);
+        }
+
+        public void GetPDF(string fileName)
+        {
+            var time = System.Text.Encoding.UTF8.GetBytes(fileName)[0] * new Random().Next(10);
+            System.Threading.Thread.Sleep(time);
+            lock (_getpdfLock)
+            {
+                Client.DataReceived -= Client_DataReceived;
+
+                var data = Client.SendAndGetReply(Serializer.Serialize(new GetPDFModel() { FileName = fileName }), new TimeSpan(1, 0, 0));
+
+                var bufferSize = Client.Socket.ReceiveBufferSize;
+
+                var bytesLeft = data.GetInt;
+                Debug.WriteLine($"{fileName} mérete: {bytesLeft} byte");
+                var fileData = new List<byte>();
+                var bytesRead = 0;
+
+                while (bytesLeft > 0)
+                {
+                    var curDataSize = Math.Min(bufferSize, bytesLeft);
+
+                    if (curDataSize > 0)
+                    {
+                        Debug.WriteLine($"{fileName} fájlhoz adat olvasásra készülés {curDataSize} méretben");
+
+                        var msg = Client.SendAndGetReply("ok", new TimeSpan(1, 0, 0));
+
+                        Debug.WriteLine($"{fileName} fájlhoz adat olvasva {curDataSize} méretben");
+
+                        bytesLeft -= curDataSize;
+                        bytesRead += curDataSize;
+
+                        Debug.WriteLine($"{fileName} fájlhoz még {bytesLeft} byte maradt, {bytesRead} byte kiolvasva");
+
+                        fileData.AddRange(msg.Data);
+                    }
+                }
+
+                var path = System.IO.Path.Combine(Datas.PDFsPath, fileName);
+                Debug.WriteLine($"{fileName} fájlhoz az összes adat kiolvasva {bytesRead} byte méretben, kiírás a lemezre, elérése: {path}");
+
+                System.IO.File.WriteAllBytes(path, fileData.ToArray());
+
+                Client.DataReceived += Client_DataReceived;
+            }
         }
     }
 }

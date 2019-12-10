@@ -42,21 +42,28 @@ namespace TCPServer
             {
                 Request.State = RequestState.Executing;
 
-                var data = (byte[])method?.Invoke(Methods, new object[] { Serializer.Deserialize(Request.Data) });
-
-                if (data != default)
+                try
                 {
-                    if (data.Length > 0)
-                    {
-                        data = Serializer.Serialize(data);
-                    }
-                    else
-                    {
-                        data = Serializer.Serialize(Request);
-                    }
-                }
+                    var data = (byte[])method?.Invoke(Methods, new object[] { Serializer.Deserialize(Request.Data) });
 
-                return (byte[])data;
+                    if (data != default)
+                    {
+                        if (data.Length > 0)
+                        {
+                            data = Serializer.Serialize(data);
+                        }
+                        else
+                        {
+                            data = Serializer.Serialize(Request);
+                        }
+                    }
+
+                    return (byte[])data;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
             else
             {

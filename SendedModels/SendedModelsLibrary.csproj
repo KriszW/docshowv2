@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetPDFModel.cs" />
     <Compile Include="IRequestMethods.cs" />
     <Compile Include="MachineSetModel.cs" />
     <Compile Include="PDFModelOverTCP.cs" />

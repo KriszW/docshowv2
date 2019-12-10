@@ -132,9 +132,9 @@
       <Project>{58365DAC-2CFA-4F45-8013-91A272C79CD7}</Project>
       <Name>SendOutModelsLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServerSettings\ServerSettingsLibrary.csproj">
+    <ProjectReference Include="..\ServerSettings\SettingsLibrary.csproj">
       <Project>{88C4239F-0D94-408C-9259-3B53633A911E}</Project>
-      <Name>ServerSettingsLibrary</Name>
+      <Name>SettingsLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\TCPServer\TCPServerLibrary.csproj">
       <Project>{5C6DDC2F-84DB-4331-9EAB-02980C7DDA9A}</Project>

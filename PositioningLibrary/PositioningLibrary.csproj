@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Datas.cs" />
     <Compile Include="MonitorInfo.cs" />
+    <Compile Include="PDFNotFoundException.cs" />
     <Compile Include="Positioning\DataModels\HW.cs" />
     <Compile Include="Positioning\DataModels\NativeMethods.cs" />
     <Compile Include="Positioning\DataModels\SWD.cs" />

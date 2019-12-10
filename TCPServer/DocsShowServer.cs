@@ -1,6 +1,8 @@
 ﻿using EasyTcp;
 using EasyTcp.Server;
 using SendedModels;
+using Settings.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -26,16 +28,67 @@ namespace TCPServer
         {
             Task.Run(() =>
             {
-                var request = (Request)Serializer.Deserialize(e.Data);
-                var requestManager = new RequestManager(request, new RequestMethods(request));
+                var requestData = Serializer.Deserialize(e.Data);
 
-                var reply = requestManager.ManageRequest();
-
-                if (reply != default && reply.Length > 0)
+                if (requestData is Request request)
                 {
-                    Server.Send(e.Socket, reply);
+                    var requestManager = new RequestManager(request, new RequestMethods(request));
+
+                    var reply = requestManager.ManageRequest();
+
+                    if (reply != default && reply.Length > 0)
+                    {
+                        Server.Send(e.Socket, reply);
+                    } 
+                }
+                else if(requestData is GetPDFModel getPDFModel)
+                {
+                    Server.DataReceived -= DataReceived;
+
+                    var filePath = System.IO.Path.Combine(ServerSettings.CurrentSettings.Resources,getPDFModel.FileName);
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        var data = System.IO.File.ReadAllBytes(filePath);
+
+                        SendFile(e.Socket, data);
+                    }
+
+                    Server.DataReceived += DataReceived;
                 }
             });
+        }
+
+        private void SendFile(Socket soc, byte[] data)
+        {
+            //mennyit bájtot küldött el
+            var bytesSent = 0;
+            //mennyi maradt
+            var bytesLeft = data.Length;
+
+            Server.Send(soc, data.Length);
+
+            System.Threading.Thread.Sleep(500);
+
+            //addig csinálja amíg maradt bájt
+            while (bytesLeft > 0)
+            {
+                //a maradék lekérése
+                var curDataSize = Math.Min(soc.ReceiveBufferSize - 2, bytesLeft);
+
+                var actData = new byte[curDataSize];
+
+                Array.Copy(data, bytesSent, actData, 0, curDataSize);
+
+                Server.Send(soc, actData);
+
+                //az elküldötthöz hozzáadás
+                bytesSent += curDataSize;
+                //a maradból elvevés
+                bytesLeft -= curDataSize;
+
+                System.Threading.Thread.Sleep(500);
+            }
         }
 
         public void Start(ushort port)

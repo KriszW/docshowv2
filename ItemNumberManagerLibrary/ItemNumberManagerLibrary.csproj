@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServerSettings\ServerSettingsLibrary.csproj">
+    <ProjectReference Include="..\ServerSettings\SettingsLibrary.csproj">
       <Project>{88C4239F-0D94-408C-9259-3B53633A911E}</Project>
-      <Name>ServerSettingsLibrary</Name>
+      <Name>SettingsLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

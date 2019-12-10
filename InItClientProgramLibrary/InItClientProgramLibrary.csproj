@@ -68,6 +68,10 @@
       <Project>{918c1bcb-26f8-4549-9243-439037fc4d2b}</Project>
       <Name>PositioningLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServerSettings\SettingsLibrary.csproj">
+      <Project>{88C4239F-0D94-408C-9259-3B53633A911E}</Project>
+      <Name>SettingsLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
