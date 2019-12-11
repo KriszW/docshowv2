@@ -18,6 +18,7 @@ namespace Settings.Server
         public string ConnString { get; set; }
         public string PsExecLocation { get; set; }
         public int Interval { get; set; }
+        public ushort ServerPort { get; set; } = 43213;
 
         public static ServerSettings LoadSettings(string path)
         {

@@ -6,6 +6,8 @@ namespace TCPClient
 {
     public class RequestMethods : IRequestMethods
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public RequestMethods(Request request)
         {
             Request = request ?? throw new ArgumentNullException(nameof(request));

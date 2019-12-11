@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using TCPClient;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace ClientService
 {
     public partial class DocsShowClientService : ServiceBase
