@@ -8,6 +8,8 @@ namespace LuxScanRawItems
 {
     internal class GetRawItems
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public event OnNewLuxscanItems NewItems;
 
         public string[] RawLines { get; private set; }
@@ -28,15 +30,15 @@ namespace LuxScanRawItems
             {
                 if (item.StartsWith("Item") || IsUsableItem(item))
                 {
-                    Debug.WriteLine("Converter létrehozása");
+                    _logger.Debug("Converter létrehozása");
                     _converter = new IDConverter(item);
-                    Debug.WriteLine("ID megszerzése");
+                    _logger.Debug("ID megszerzése");
                     var id = _converter.GetID();
 
-                    Debug.WriteLine($"Az LuxScanItem megszerzése a {id}-hoz");
+                    _logger.Debug($"Az LuxScanItem megszerzése a {id}-hoz");
                     var luxscanItem = RawItems.Where(r => r.ID == id).FirstOrDefault();
 
-                    Debug.WriteLine($"Az Itemtípus megszerzése a {id}-hoz");
+                    _logger.Debug($"Az Itemtípus megszerzése a {id}-hoz");
                     var itemType = GetItemType(item);
 
                     switch (itemType)
@@ -44,15 +46,15 @@ namespace LuxScanRawItems
                         case "Item":
                             if (IsActiveItem(item))
                             {
-                                Debug.WriteLine($"Az {id} aktív");
+                                _logger.Debug($"Az {id} aktív");
                                 var kilokoGetter = new KilokoGetter(item);
 
-                                Debug.WriteLine($"Az Kilőkők megszerzése a {id}-hoz");
+                                _logger.Debug($"Az Kilőkők megszerzése a {id}-hoz");
 
                                 var kilokoNum = kilokoGetter.GetKilokoNum();
                                 var kiloko = KilokoGetter.GetKilokoFromCodeTable(kilokoNum);
 
-                                Debug.WriteLine($"Az új LuxScanItem hozzáadása");
+                                _logger.Debug($"Az új LuxScanItem hozzáadása");
 
                                 RawItems.Add(new LuxScanItem(id, kiloko));
                             }
@@ -65,7 +67,7 @@ namespace LuxScanRawItems
 
                             if (rawItem != default)
                             {
-                                Debug.WriteLine($"Az új cikk hozzáadása az {id}-hoz");
+                                _logger.Debug($"Az új cikk hozzáadása az {id}-hoz");
                                 rawItem.AddItem(item.Split('=')[1]);
                             }
 

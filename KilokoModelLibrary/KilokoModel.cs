@@ -6,6 +6,7 @@ namespace KilokoModelLibrary
 {
     public class KilokoModel : IKilokoModel
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public static List<KilokoModel> Kilokok { get; set; }
 
         public KilokoModel(string kiloko)
@@ -20,6 +21,8 @@ namespace KilokoModelLibrary
 
         private int GetKilokoNumber()
         {
+            _logger.Debug($"A {RawKiloko}-ből a fő kilőkő szám megszerzése...");
+
             var tempLine = "";
 
             foreach (var item in RawKiloko)
@@ -30,6 +33,7 @@ namespace KilokoModelLibrary
                 }
             }
 
+            _logger.Debug($"A {RawKiloko}-ből a fő kilőkő szám megszerzése sikeres volt: {tempLine}");
             return int.Parse(tempLine);
         }
 
@@ -73,8 +77,17 @@ namespace KilokoModelLibrary
             {
                 if (item != default)
                 {
+                    _logger.Debug($"Cikk hozzáadása a {item.MaterialName} cikkel sikeresen hozzáadva a {Kiloko} kilőkőhöz");
                     Items.Add(item);
                 }
+                else
+                {
+                    _logger.Debug($"Cikk hozzáadása nem sikerült a {Kiloko} kilőkőhöz, mert meghaladta invalid volt a cikk");
+                }
+            }
+            else
+            {
+                _logger.Debug($"Cikk hozzáadása a {item.MaterialName} cikkel nem sikerült hozzáadni a {Kiloko} kilőkőhöz, mert meghaladta a {MaxCikkCount} maximumot");
             }
         }
 
@@ -102,6 +115,7 @@ namespace KilokoModelLibrary
                 }
             }
 
+            _logger.Debug($"A {Kiloko}-ből a Cikk nevek megszerzése: {output.MaterialName} cikk");
             return output;
         }
     }

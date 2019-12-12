@@ -6,12 +6,14 @@ namespace Machines
 {
     public class MachinesToGUIModel
     {
+        private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public MachinesToGUIModel()
         {
         }
 
         public MachinesToGUIModel(KilokoModel model)
         {
+            _logger.Debug($"A {model.Kiloko} kilőkőmodel GUI modelre fordítása...");
             Kiloko = model.Kiloko;
             var item = model.GetItemnamesModel();
 
@@ -29,6 +31,10 @@ namespace Machines
             {
                 DocRight = right.FileName; 
             }
+            _logger.Debug($"A {model.Kiloko} kilőkőmodel GUI modelre fordítása kész");
+            _logger.Debug($"A {model.Kiloko} kilőkőmodel cikke: {Itemnumber}");
+            _logger.Debug($"A {model.Kiloko} kilőkőmodel bal doksija: {DocLeft}");
+            _logger.Debug($"A {model.Kiloko} kilőkőmodel jobb doksija: {DocRight}");
         }
 
         public MachinesToGUIModel(int kiloko, string itemnumber, string docLeft, string docRight, bool active)
@@ -48,8 +54,10 @@ namespace Machines
 
         public string GetIP()
         {
+            _logger.Debug($"A {Kiloko} asztal számához a gép megszerzése...");
             var machine = Machine.Machines.Where(m => m.KilokoNum == Kiloko).FirstOrDefault();
-
+            _logger.Debug($"A {Kiloko} asztal számához a gép megszerzve");
+            _logger.Debug($"A {Kiloko}-nél az IP cím visszaadása");
             return machine != default ? machine.IP : (default);
         }
     }
